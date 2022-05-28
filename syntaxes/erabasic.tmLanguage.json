@@ -29,7 +29,6 @@
 		"preprocessor-block": {
 			"patterns": [
 				{
-					"name": "meta.preprocessor.erabasic",
 					"begin": "^\\s*(;[!#];)?\\s*\\[\\s*(IF|ELSEIF|IF_DEBUG|IF_NDEBUG|ELSE|ENDIF)",
 					"beginCaptures": {
 						"1": {
@@ -79,7 +78,6 @@
 		"preprocessor-attribute": {
 			"patterns": [
 				{
-					"name": "source.definition.preprocessor.erabasic",
 					"begin": "^\\s*(#DIMS?)(?:\\s+(SAVEDATA|CHARADATA|GLOBAL|DYNAMIC|STATIC|CONST|REF))*\\b",
 					"beginCaptures": {
 						"1": {
@@ -97,7 +95,6 @@
 					]
 				},
 				{
-					"name": "source.definition.preprocessor.erabasic",
 					"begin": "^\\s*(#(?:SINGLE|PRI|LATER|ONLY|FUNCTION|FUNCTIONS|LOCALSIZE|LOCALSSIZE|DEFINE))\\b",
 					"beginCaptures": {
 						"1": {
@@ -138,7 +135,6 @@
 		"function-declaration": {
 			"patterns": [
 				{
-					"name": "source.definition.function.erabasic",
 					"begin": "(@)\\s*((?!\\d)[^\\x00-\\x2f\\x3a-\\x40\\x5b-\\x5e\\x60\\x7b-\\x7e]+)",
 					"beginCaptures": {
 						"1": {
@@ -206,7 +202,6 @@
 							"match": "(?!\\d)[^\\x00-\\x2f\\x3a-\\x40\\x5b-\\x5e\\x60\\x7b-\\x7e]+"
 						},
 						{
-							"name": "source.statement.call.arglist.erabasic",
 							"begin": "(?=,|\\()",
 							"end": "(?=$)",
 							"patterns": [
@@ -237,7 +232,6 @@
 							]
 						},
 						{
-							"name": "source.statement.call.arglist.erabasic",
 							"begin": "(?=,|\\()",
 							"end": "(?=$)",
 							"patterns": [
@@ -312,7 +306,6 @@
 							"match": "(?!\\d)[^\\x00-\\x2f\\x3a-\\x40\\x5b-\\x5e\\x60\\x7b-\\x7e]+"
 						},
 						{
-							"name": "source.statement.call.arglist.erabasic",
 							"begin": "(?=,|\\()",
 							"end": "(?=$)",
 							"patterns": [
@@ -343,7 +336,6 @@
 							]
 						},
 						{
-							"name": "source.statement.call.arglist.erabasic",
 							"begin": "(?=,|\\()",
 							"end": "(?=$)",
 							"patterns": [
@@ -372,7 +364,6 @@
 							"match": "(?!\\d)[^\\x00-\\x2f\\x3a-\\x40\\x5b-\\x5e\\x60\\x7b-\\x7e]+"
 						},
 						{
-							"name": "source.statement.call.arglist.erabasic",
 							"begin": "(?=,|\\()",
 							"end": "(?=$)",
 							"patterns": [
@@ -403,7 +394,6 @@
 							]
 						},
 						{
-							"name": "source.statement.call.arglist.erabasic",
 							"begin": "(?=,|\\()",
 							"end": "(?=$)",
 							"patterns": [
