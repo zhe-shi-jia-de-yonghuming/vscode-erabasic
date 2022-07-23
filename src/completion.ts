@@ -2690,6 +2690,10 @@ export const GetBuiltinComplationItems = () => {
             kind: Function,
         },
         {
+            label: "ENUMFILES",
+            kind: Function,
+        },
+        {
             label: "GETMEMORYUSAGE",
             kind: Function,
         },
