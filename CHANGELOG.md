@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "erabasic-EM+EE" extension will be documented in this file.
 
+## [0.3.0] - 2022-07-24
+- Campatible with latest version
+
 ## [0.2.1] - 2022-05-28
 - Add [docs link](https://evilmask.gitlab.io/emuera.em.doc/) in readme
 
