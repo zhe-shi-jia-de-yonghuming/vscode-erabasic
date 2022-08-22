@@ -2610,7 +2610,15 @@ export const GetBuiltinComplationItems = () => {
             kind: Function,
         },
         {
+            label: "XML_GET_BYNAME",
+            kind: Function,
+        },
+        {
             label: "XML_SET",
+            kind: Function,
+        },
+        {
+            label: "XML_SET_BYNAME",
             kind: Function,
         },
         {
@@ -2622,7 +2630,15 @@ export const GetBuiltinComplationItems = () => {
             kind: Function,
         },
         {
+            label: "XML_ADDNODE_BYNAME",
+            kind: Function,
+        },
+        {
             label: "XML_REMOVENODE",
+            kind: Function,
+        },
+        {
+            label: "XML_REMOVENODE_BYNAME",
             kind: Function,
         },
         {
@@ -2630,11 +2646,23 @@ export const GetBuiltinComplationItems = () => {
             kind: Function,
         },
         {
+            label: "XML_REPLACE_BYNAME",
+            kind: Function,
+        },
+        {
             label: "XML_ADDATTRIBUTE",
             kind: Function,
         },
         {
+            label: "XML_ADDATTRIBUTE_BYNAME",
+            kind: Function,
+        },
+        {
             label: "XML_REMOVEATTRIBUTE",
+            kind: Function,
+        },
+        {
+            label: "XML_REMOVEATTRIBUTE_BYNAME",
             kind: Function,
         },
         {
