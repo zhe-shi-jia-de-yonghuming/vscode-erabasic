@@ -2729,6 +2729,14 @@ export const GetBuiltinComplationItems = () => {
             label: "CLEARMEMORY",
             kind: Function,
         },
+        {
+            label: "GETTEXTBOX",
+            kind: Function,
+        },
+        {
+            label: "SETTEXTBOX",
+            kind: Function,
+        },
         //#endregion
     ]);
 }
