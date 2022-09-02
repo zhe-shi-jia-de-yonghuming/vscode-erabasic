@@ -922,6 +922,10 @@ export const GetBuiltinComplationItems = () => {
             kind: Command,
         },
         {
+            label: "INPUTANY",
+            kind: Command,
+        },
+        {
             label: "TINPUT",
             kind: Command,
         },
