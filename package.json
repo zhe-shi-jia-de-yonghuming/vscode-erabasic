@@ -1,19 +1,19 @@
 {
-    "name": "erabasic",
-    "displayName": "EraBasic",
-    "description": "Language Support for EraBasic",
+    "name": "erabasic-emee",
+    "displayName": "EraBasic-EM+EE",
+    "description": "Language Support for EraBasic and EM+EE",
     "license": "MIT",
     "version": "0.4.0",
-    "publisher": "sasami",
+    "publisher": "deletedenter",
     "bugs": {
-        "url": "https://github.com/sasami/vscode-erabasic/issues"
+        "url": "https://discord.gg/p5rb5uK"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/sasami/vscode-erabasic.git"
+        "url": "git+https://github.com/CatQOh/vscode-erabasic.git"
     },
     "engines": {
-        "vscode": "^1.34.0"
+        "vscode": "^1.67.0"
     },
     "categories": [
         "Programming Languages"
@@ -23,7 +23,7 @@
     ],
     "main": "./out/extension",
     "scripts": {
-        "build": "vsce package --baseContentUrl . --baseImagesUrl https://rawgit.com/sasami/vscode-erabasic/master/ --out erabasic-latest.vsix",
+        "build": "vsce package --baseContentUrl . --baseImagesUrl https://raw.githubusercontent.com/CatQOh/vscode-erabasic/master --out erabasic-latest.vsix",
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "lint": "tslint -p ./",
@@ -39,7 +39,8 @@
                 ],
                 "extensions": [
                     ".erb",
-                    ".erh"
+                    ".erh",
+                    ".erd"
                 ],
                 "configuration": "./language-configuration.json"
             }
@@ -57,7 +58,7 @@
                 "path": "./snippets/erabasic.json"
             }
         ],
-        "configuration":[
+        "configuration": [
             {
                 "title": "erabasic",
                 "properties": {
@@ -71,6 +72,7 @@
         ]
     },
     "dependencies": {
+        "fs-extra": "^10.1.0",
         "iconv-lite": "^0.4.24"
     },
     "devDependencies": {

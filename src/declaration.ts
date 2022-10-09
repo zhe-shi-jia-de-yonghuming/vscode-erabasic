@@ -274,7 +274,7 @@ export class DeclarationProvider implements Disposable {
                 fs.readFile(path, (err, data) => {
                     if (err) {
                         if (typeof err === "object" && err.code === "ENOENT") {
-                            resolve(undefined);
+                            resolve("");
                         } else {
                             reject(err);
                         }

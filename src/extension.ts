@@ -5,15 +5,18 @@ import {
     DocumentSelector, DocumentSymbolProvider, ExtensionContext, Position, SymbolInformation, TextDocument, WorkspaceSymbolProvider,
 } from "vscode";
 
-import { BuiltinComplationItems, CompletionItemRepository, declToCompletionItem } from "./completion";
-import { Declaration, DeclarationProvider, readDeclarations } from "./declaration";
+import { GetBuiltinComplationItems, CompletionItemRepository, declToCompletionItem } from "./completion";
+import { DeclarationProvider, readDeclarations } from "./declaration";
 import { DefinitionRepository } from "./definition";
 import { EraHoverProvider } from "./hover";
 import { readSymbolInformations, SymbolInformationRepository } from "./symbol";
 
+export let extensionPath: string;
+
 export function activate(context: ExtensionContext) {
     const selector: DocumentSelector = { language: "erabasic" };
     const provider: DeclarationProvider = new DeclarationProvider(context);
+    extensionPath = context.extensionPath;
     context.subscriptions.push(vscode.languages.registerCompletionItemProvider(selector, new EraBasicCompletionItemProvider(provider)));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(selector, new EraBasicDefinitionProvider(provider)));
     context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(selector, new EraBasicDocumentSymbolProvider()));
@@ -37,17 +40,18 @@ class EraBasicCompletionItemProvider implements CompletionItemProvider {
 
     public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
         if (!this.option.completionWorkspaceSymbols) {
-            return Promise.resolve( BuiltinComplationItems.concat(readDeclarations(document.getText())
-                .filter(d=> d.visible(position))
-                .map(decreation => {
-                    return declToCompletionItem(decreation);
-                })
+            return Promise.resolve(GetBuiltinComplationItems().concat(
+                readDeclarations(document.getText())
+                    .filter(d=> d.visible(position))
+                    .map(decreation => {
+                        return declToCompletionItem(decreation);
+                    })
             ));
         }
 
         return this.repo.sync().then(() => 
             {
-                const res = BuiltinComplationItems.concat(...this.repo.find(document, position));
+                const res = GetBuiltinComplationItems().concat(...this.repo.find(document, position));
                 return res;
             }
         );
