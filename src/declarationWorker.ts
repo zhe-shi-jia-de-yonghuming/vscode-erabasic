@@ -58,7 +58,19 @@ export function readDeclarations(input: string): DeclarationObj[] {
     let funcStart: DeclarationObj;
     let funcEndLine: number;
     let funcEndChar: number;
+    let docComment: string = "";
     for (const [line, text] of iterlines(input)) {
+        const commentMatch = /\s*;{3}(@\S+)?(.*)/.exec(text);
+        if (commentMatch !== null) {
+            if (commentMatch[1]) {
+                docComment = docComment.concat("\n\n*",commentMatch[1],"* -",commentMatch[2]);
+                continue;
+            }
+
+            docComment = docComment.concat("\n",commentMatch[2]);
+            continue;
+        }
+
         {
             const match = /^\s*@([^\s\x21-\x2f\x3a-\x40\x5b-\x5e\x7b-\x7e]+)/.exec(text);
             if (match !== null) {
@@ -89,9 +101,11 @@ export function readDeclarations(input: string): DeclarationObj[] {
                             line:line,
                             character:text.length
                         }
-                    }
+                    },
+                    docmentation: docComment,
                 }
                 symbols.push(funcStart);
+                docComment = "";
                 continue;
             }
             funcEndLine = line;
@@ -123,9 +137,10 @@ export function readDeclarations(input: string): DeclarationObj[] {
                             line:line,
                             character:text.length
                         }
-                    }
-
+                    },
+                    docmentation: docComment,
                 });
+                docComment = "";
                 continue;
             }
         }

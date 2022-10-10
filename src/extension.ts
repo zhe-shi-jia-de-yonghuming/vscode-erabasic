@@ -6,19 +6,23 @@ import {
     DocumentSelector, DocumentSymbolProvider, ExtensionContext, Position, SymbolInformation, TextDocument, WorkspaceSymbolProvider,
 } from "vscode";
 
-import { BuiltinComplationItems, CompletionItemRepository, declToCompletionItem } from "./completion";
-import { Declaration, DeclarationProvider, readDeclarations } from "./declaration";
+import { GetBuiltinComplationItems, CompletionItemRepository, declToCompletionItem } from "./completion";
+import { DeclarationProvider, readDeclarations } from "./declaration";
 import { DefinitionRepository } from "./definition";
+import { EraHoverProvider } from "./hover";
 import { readSymbolInformations, SymbolInformationRepository } from "./symbol";
+
+export let extensionPath: string;
 
 export function activate(context: ExtensionContext) {
     const selector: DocumentSelector = { language: "erabasic" };
     const provider: DeclarationProvider = new DeclarationProvider(context);
-    const option = getEraBasicOption( vscode.workspace.getConfiguration("erabasic"));
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(selector, new EraBasicCompletionItemProvider(provider,option)));
+    extensionPath = context.extensionPath;
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(selector, new EraBasicCompletionItemProvider(provider)));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(selector, new EraBasicDefinitionProvider(provider)));
     context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(selector, new EraBasicDocumentSymbolProvider()));
     context.subscriptions.push(vscode.languages.registerWorkspaceSymbolProvider(new EraBasicWorkspaceSymbolProvider(provider)));
+    context.subscriptions.push(vscode.languages.registerHoverProvider(selector, new EraHoverProvider(provider)));
     context.subscriptions.push(provider);
 }
 
@@ -28,28 +32,27 @@ export function deactivate() {
 
 class EraBasicCompletionItemProvider implements CompletionItemProvider {
     private repo: CompletionItemRepository;
+    private option: EraBasicOption;
 
-    constructor(provider: DeclarationProvider, private option:EraBasicOption) {
+    constructor(provider: DeclarationProvider) {
         this.repo = new CompletionItemRepository(provider);
+        this.option = new EraBasicOption();
     }
 
     public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
-        const start = performance.now();
-        console.log("start provideCompletionItems:"+(performance.now()-start));
-        
         if (!this.option.completionWorkspaceSymbols) {
-            return Promise.resolve( BuiltinComplationItems.concat(readDeclarations(document.getText())
-                .filter(d=> d.visible(position))
-                .map(decreation => {
-                    return declToCompletionItem(decreation);
-                })
+            return Promise.resolve(GetBuiltinComplationItems().concat(
+                readDeclarations(document.getText())
+                    .filter(d=> d.visible(position))
+                    .map(decreation => {
+                        return declToCompletionItem(decreation);
+                    })
             ));
         }
 
         return this.repo.sync().then(() => 
             {
-                const res = BuiltinComplationItems.concat(...this.repo.find(document, position));
-                console.log("end provideCompletionItems:"+(performance.now()-start));
+                const res = GetBuiltinComplationItems().concat(...this.repo.find(document, position));
                 return res;
             }
         );
@@ -86,12 +89,11 @@ class EraBasicWorkspaceSymbolProvider implements WorkspaceSymbolProvider {
     }
 }
 
-export interface EraBasicOption {
-    completionWorkspaceSymbols:boolean;
-}
-
-function getEraBasicOption(config:vscode.WorkspaceConfiguration):EraBasicOption {
-    return {
-        completionWorkspaceSymbols: config.get("completionWorkspaceSymbols", false),
-    };
+export class EraBasicOption {
+    public get completionWorkspaceSymbols() : boolean {
+        return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceSymbols", false);
+    }
+    public get completionWorkspaceByMultiProcess() : boolean {
+        return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceByMultiProcess", false);
+    }
 }

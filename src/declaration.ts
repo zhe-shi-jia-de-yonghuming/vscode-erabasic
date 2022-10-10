@@ -7,6 +7,7 @@ import * as vscode from "vscode";
 import { Disposable, Event, EventEmitter, ExtensionContext, Position, Range, SymbolKind, Uri, WorkspaceFolder } from "vscode";
 import { Worker } from "worker_threads";
 import { WorkerResponse } from "./declarationWorker";
+import { EraBasicOption } from "./extension";
 
 export class Declaration {
     constructor(
@@ -14,7 +15,8 @@ export class Declaration {
         public kind: SymbolKind,
         public container: Declaration | undefined,
         public nameRange: Range,
-        public bodyRange: Range) {
+        public bodyRange: Range,
+        public docmentation: string) {
     }
 
     get isGlobal(): boolean {
@@ -30,7 +32,7 @@ function* iterlines(input: string): IterableIterator<[number, string]> {
     const lines = input.split(/\r?\n/);
     loop: for (let i = 0; i < lines.length; i++) {
         const text = lines[i];
-        if (/^\s*(?:$|;(?![!#];))/.test(text)) {
+        if (/^\s*(?:$|;(?![!#;];))/.test(text)) {
             continue;
         }
         if (/^\s*(?:;[!#];\s*)?\[SKIPSTART\]/.test(text)) {
@@ -50,7 +52,20 @@ export function readDeclarations(input: string): Declaration[] {
     let funcStart: Declaration;
     let funcEndLine: number;
     let funcEndChar: number;
+    let docComment: string = "";
     for (const [line, text] of iterlines(input)) {
+
+        const commentMatch = /\s*;{3}(@\S+)?(.*)/.exec(text);
+        if (commentMatch !== null) {
+            if (commentMatch[1]) {
+                docComment = docComment.concat("\n\n*",commentMatch[1],"* -",commentMatch[2]);
+                continue;
+            }
+
+            docComment = docComment.concat("\n",commentMatch[2]);
+            continue;
+        }
+
         {
             const match = /^\s*@([^\s\x21-\x2f\x3a-\x40\x5b-\x5e\x7b-\x7e]+)/.exec(text);
             if (match !== null) {
@@ -63,8 +78,10 @@ export function readDeclarations(input: string): Declaration[] {
                     undefined,
                     new Range(line, match[0].length - match[1].length, line, match[0].length),
                     new Range(line, 0, line, text.length),
+                    docComment,
                 );
                 symbols.push(funcStart);
+                docComment = "";
                 continue;
             }
             funcEndLine = line;
@@ -79,10 +96,14 @@ export function readDeclarations(input: string): Declaration[] {
                     funcStart,
                     new Range(line, match[0].length - match[2].length, line, match[0].length),
                     new Range(line, 0, line, text.length),
+                    docComment,
                 ));
+                docComment = "";
                 continue;
             }
         }
+
+        docComment = "";
     }
     if (funcStart !== undefined) {
         funcStart.bodyRange = funcStart.bodyRange.with({ end: new Position(funcEndLine, funcEndChar) });
@@ -176,9 +197,12 @@ export class DeclarationProvider implements Disposable {
     private onDidDeleteEmitter: EventEmitter<DeclarationDeleteEvent> = new EventEmitter();
     private onDidResetEmitter: EventEmitter<void> = new EventEmitter();
 
+    private option: EraBasicOption;
+
     constructor(context: ExtensionContext) {
         this.builtin = new BuiltinDeclarationFiles(context);
         this.encoding = new WorkspaceEncoding();
+        this.option = new EraBasicOption();
 
         const subscriptions: Disposable[] = [];
 
@@ -257,70 +281,78 @@ export class DeclarationProvider implements Disposable {
             return;
         }
 
-        // マルチプロセスにしようとした残骸
-        
-        const targ = [...this.dirty];
-        const cps = cpus();
-        const bundle = Math.ceil(targ.length / cps.length);
-        const sliced = cps.map((cpu,i)=>{
-            const path = join(__dirname,"declarationWorker.js");
-            return new Worker(path, {workerData: {dirty: targ.slice(i*bundle, bundle).map(([a,b])=>[a,b.fsPath]),encodings:this.encoding.encodings}});
-        })
-        
-        await Promise.all( sliced.map((w,i)=>{
-            return new Promise((resolve, reject)=>{
-                w.on("message", (res:WorkerResponse[])=>{
-                    for (const rec of res) {
-                        if (rec.declarations === undefined) {
-                            this.dirty.delete(rec.path);
-                            this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(Uri.file(rec.fspath)));
-                        }
-                        if (this.dirty.delete(rec.path)) {
-                            const decls:Map<string,Declaration>=new Map();
-                            for (const decl of rec.declarations) {
-                                decls.set(decl.name,new Declaration(decl.name,decl.kind,decls.get(decl.name),new Range(decl.nameRange.start.line,decl.nameRange.start.character,decl.nameRange.end.line,decl.nameRange.end.character),new Range(decl.bodyRange.start.line,decl.bodyRange.start.character,decl.bodyRange.end.line,decl.bodyRange.end.character)));
-                            }
-
-                            this.onDidChangeEmitter.fire(new DeclarationChangeEvent(Uri.file(rec.fspath), [...decls.values()]));
-                        }
-                    }
-                    resolve(undefined);
-                });
-                w.on("error",(err)=>{
-                    console.log(`${i}:${err}`);
-                    reject(err);
-                });
-                w.on("exit",(n)=>{
-                    console.log(`${i}: quit ${n}`);
-                });
+        if (this.option.completionWorkspaceByMultiProcess) {
+            const targ = [...this.dirty];
+            const cps = cpus();
+            const bundle = Math.ceil(targ.length / cps.length);
+            const sliced = cps.map((cpu,i)=>{
+                const path = join(__dirname,"declarationWorker.js");
+                return new Worker(path, {workerData: {dirty: targ.slice(i*bundle, bundle).map(([a,b])=>[a,b.fsPath]),encodings:this.encoding.encodings}});
             })
-        }));
-        return;
+            
+            await Promise.all( sliced.map((w,i)=>{
+                return new Promise((resolve, reject)=>{
+                    w.on("message", (res:WorkerResponse[])=>{
+                        for (const rec of res) {
+                            if (rec.declarations === undefined) {
+                                this.dirty.delete(rec.path);
+                                this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(Uri.file(rec.fspath)));
+                            }
+                            if (this.dirty.delete(rec.path)) {
+                                const decls:Map<string,Declaration>=new Map();
+                                for (const decl of rec.declarations) {
+                                    decls.set(decl.name, new Declaration(
+                                        decl.name,
+                                        decl.kind,
+                                        decls.get(decl.name),
+                                        new Range(decl.nameRange.start.line,decl.nameRange.start.character,decl.nameRange.end.line,decl.nameRange.end.character),
+                                        new Range(decl.bodyRange.start.line,decl.bodyRange.start.character,decl.bodyRange.end.line,decl.bodyRange.end.character),
+                                        decl.docmentation
+                                    ));
+                                }
+    
+                                this.onDidChangeEmitter.fire(new DeclarationChangeEvent(Uri.file(rec.fspath), [...decls.values()]));
+                            }
+                        }
+                        resolve(undefined);
+                    });
+                    w.on("error",(err)=>{
+                        console.log(`${i}:${err}`);
+                        reject(err);
+                    });
+                    w.on("exit",(n)=>{
+                        console.log(`${i}: quit ${n}`);
+                    });
+                })
+            }));
 
-        // await Promise.all([...this.dirty].map(async ([path, uri])=>{
-        //     const input = await new Promise<string | undefined>((resolve, reject) => {
-        //         fs.readFile(path, (err, data) => {
-        //             if (err) {
-        //                 if (typeof err === "object" && err.code === "ENOENT") {
-        //                     resolve(undefined);
-        //                 } else {
-        //                     reject(err);
-        //                 }
-        //             } else {
-        //                 resolve(iconv.decode(data, this.encoding.detect(path, data)));
-        //             }
-        //         });
-        //     });
-        //     if (input === undefined) {
-        //         this.dirty.delete(path);
-        //         this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(uri));
-        //         return;
-        //     }
-        //     if (this.dirty.delete(path)) {
-        //         this.onDidChangeEmitter.fire(new DeclarationChangeEvent(uri, readDeclarations(input)));
-        //         return;
-        //     }
-        // }));
+            return;
+        }
+
+        await Promise.all([...this.dirty].map(async ([path, uri])=>{
+            const input = await new Promise<string | undefined>((resolve, reject) => {
+                fs.readFile(path, (err, data) => {
+                    if (err) {
+                        if (typeof err === "object" && err.code === "ENOENT") {
+                            resolve(undefined);
+                        } else {
+                            reject(err);
+                        }
+                    } else {
+                        resolve(iconv.decode(data, this.encoding.detect(path, data)));
+                    }
+                });
+            });
+            if (input === undefined) {
+                this.dirty.delete(path);
+                this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(uri));
+                return;
+            }
+            if (this.dirty.delete(path)) {
+                this.onDidChangeEmitter.fire(new DeclarationChangeEvent(uri, readDeclarations(input)));
+                return;
+            }
+        }));
 
     }
 }
