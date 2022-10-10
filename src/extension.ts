@@ -36,23 +36,22 @@ class EraBasicCompletionItemProvider implements CompletionItemProvider {
 
     public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
         const start = performance.now();
-        console.log("start provideCompletionItems:"+(performance.now()-start));
-        
+        console.log("start provideCompletionItems:" + (performance.now() - start));
+
         if (!this.options.completionWorkspaceSymbols) {
-            return Promise.resolve( BuiltinComplationItems.concat(readDeclarations(document.getText())
-                .filter(d=> d.visible(position))
+            return Promise.resolve(BuiltinComplationItems.concat(readDeclarations(document.getText())
+                .filter(d => d.visible(position))
                 .map(decreation => {
                     return declToCompletionItem(decreation);
                 })
             ));
         }
 
-        return this.repo.sync().then(() => 
-            {
-                const res = BuiltinComplationItems.concat(...this.repo.find(document, position));
-                console.log("end provideCompletionItems:"+(performance.now()-start));
-                return res;
-            }
+        return this.repo.sync().then(() => {
+            const res = BuiltinComplationItems.concat(...this.repo.find(document, position));
+            console.log("end provideCompletionItems:" + (performance.now() - start));
+            return res;
+        }
         );
     }
 }
@@ -88,10 +87,10 @@ class EraBasicWorkspaceSymbolProvider implements WorkspaceSymbolProvider {
 }
 
 export class EraBasicOption {
-    public get completionWorkspaceSymbols() : boolean {
+    public get completionWorkspaceSymbols(): boolean {
         return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceSymbols", false);
     }
-    public get completionWorkspaceByMultiProcess() : boolean {
+    public get completionWorkspaceByMultiProcess(): boolean {
         return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceByMultiProcess", false);
     }
 }
