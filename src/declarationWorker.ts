@@ -144,6 +144,7 @@ export function readDeclarations(input: string): DeclarationObj[] {
                 continue;
             }
         }
+        docComment = "";
     }
     if (funcStart !== undefined) {
         funcStart.bodyRange.end.line = funcEndLine;
