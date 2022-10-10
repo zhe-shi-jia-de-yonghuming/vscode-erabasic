@@ -1,3 +1,4 @@
+import { performance } from "perf_hooks";
 import * as vscode from "vscode";
 
 import {
@@ -33,6 +34,9 @@ class EraBasicCompletionItemProvider implements CompletionItemProvider {
     }
 
     public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
+        const start = performance.now();
+        console.log("start provideCompletionItems:"+(performance.now()-start));
+        
         if (!this.option.completionWorkspaceSymbols) {
             return Promise.resolve( BuiltinComplationItems.concat(readDeclarations(document.getText())
                 .filter(d=> d.visible(position))
@@ -45,6 +49,7 @@ class EraBasicCompletionItemProvider implements CompletionItemProvider {
         return this.repo.sync().then(() => 
             {
                 const res = BuiltinComplationItems.concat(...this.repo.find(document, position));
+                console.log("end provideCompletionItems:"+(performance.now()-start));
                 return res;
             }
         );

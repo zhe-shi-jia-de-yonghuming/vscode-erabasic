@@ -110,8 +110,12 @@ class BuiltinDeclarationFiles {
     }
 }
 
-class WorkspaceEncoding {
+export class WorkspaceEncoding {
     private encoding: string[][];
+
+    public get encodings() : string[][] {
+        return this.encoding;
+    }
 
     constructor() {
         this.reset();
@@ -255,66 +259,68 @@ export class DeclarationProvider implements Disposable {
 
         // マルチプロセスにしようとした残骸
         
-        // const targ = [...this.dirty];
-        // const cps = cpus();
-        // const bundle = Math.ceil(targ.length / cps.length);
-        // const sliced = cps.map((cpu,i)=>{
-        //     const path = join(__dirname,"declarationWorker.js");
-        //     return new Worker(path, {workerData: {dirty: targ.slice(i*bundle, bundle), encode:this.encoding.detect(path, data)}});
-        // })
+        const targ = [...this.dirty];
+        const cps = cpus();
+        const bundle = Math.ceil(targ.length / cps.length);
+        const sliced = cps.map((cpu,i)=>{
+            const path = join(__dirname,"declarationWorker.js");
+            return new Worker(path, {workerData: {dirty: targ.slice(i*bundle, bundle).map(([a,b])=>[a,b.fsPath]),encodings:this.encoding.encodings}});
+        })
         
-        // await Promise.all( sliced.map((w,i)=>{
-        //     return new Promise((resolve, reject)=>{
-        //         w.on("message", (res:WorkerResponse[])=>{
-        //             for (const rec of res) {
-        //                 if (rec.declarations === undefined) {
-        //                     this.dirty.delete(rec.path);
-        //                     this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(rec.uri));
+        await Promise.all( sliced.map((w,i)=>{
+            return new Promise((resolve, reject)=>{
+                w.on("message", (res:WorkerResponse[])=>{
+                    for (const rec of res) {
+                        if (rec.declarations === undefined) {
+                            this.dirty.delete(rec.path);
+                            this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(Uri.file(rec.fspath)));
+                        }
+                        if (this.dirty.delete(rec.path)) {
+                            const decls:Map<string,Declaration>=new Map();
+                            for (const decl of rec.declarations) {
+                                decls.set(decl.name,new Declaration(decl.name,decl.kind,decls.get(decl.name),new Range(decl.nameRange.start.line,decl.nameRange.start.character,decl.nameRange.end.line,decl.nameRange.end.character),new Range(decl.bodyRange.start.line,decl.bodyRange.start.character,decl.bodyRange.end.line,decl.bodyRange.end.character)));
+                            }
+
+                            this.onDidChangeEmitter.fire(new DeclarationChangeEvent(Uri.file(rec.fspath), [...decls.values()]));
+                        }
+                    }
+                    resolve(undefined);
+                });
+                w.on("error",(err)=>{
+                    console.log(`${i}:${err}`);
+                    reject(err);
+                });
+                w.on("exit",(n)=>{
+                    console.log(`${i}: quit ${n}`);
+                });
+            })
+        }));
+        return;
+
+        // await Promise.all([...this.dirty].map(async ([path, uri])=>{
+        //     const input = await new Promise<string | undefined>((resolve, reject) => {
+        //         fs.readFile(path, (err, data) => {
+        //             if (err) {
+        //                 if (typeof err === "object" && err.code === "ENOENT") {
         //                     resolve(undefined);
-        //                     return;
+        //                 } else {
+        //                     reject(err);
         //                 }
-        //                 if (this.dirty.delete(rec.path)) {
-        //                     this.onDidChangeEmitter.fire(new DeclarationChangeEvent(rec.uri, rec.declarations));
-        //                     resolve(undefined);
-        //                     return;
-        //                 }
+        //             } else {
+        //                 resolve(iconv.decode(data, this.encoding.detect(path, data)));
         //             }
         //         });
-        //         w.on("error",(err)=>{
-        //             console.log(`${i}:${err}`)
-        //         });
-        //         w.on("exit",(n)=>{
-        //             console.log(`${i}: quit ${n}`)
-        //         });
-        //     })
+        //     });
+        //     if (input === undefined) {
+        //         this.dirty.delete(path);
+        //         this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(uri));
+        //         return;
+        //     }
+        //     if (this.dirty.delete(path)) {
+        //         this.onDidChangeEmitter.fire(new DeclarationChangeEvent(uri, readDeclarations(input)));
+        //         return;
+        //     }
         // }));
-        // return;
-
-        await Promise.all([...this.dirty].map(async ([path, uri])=>{
-            const input = await new Promise<string | undefined>((resolve, reject) => {
-                fs.readFile(path, (err, data) => {
-                    if (err) {
-                        if (typeof err === "object" && err.code === "ENOENT") {
-                            resolve(undefined);
-                        } else {
-                            reject(err);
-                        }
-                    } else {
-                        resolve(iconv.decode(data, this.encoding.detect(path, data)));
-                    }
-                });
-            });
-            if (input === undefined) {
-                this.dirty.delete(path);
-                this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(uri));
-                return;
-            }
-            if (this.dirty.delete(path)) {
-                this.onDidChangeEmitter.fire(new DeclarationChangeEvent(uri, readDeclarations(input)));
-                return;
-            }
-
-        }));
 
     }
 }
