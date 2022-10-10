@@ -55,7 +55,7 @@ export function readDeclarations(input: string): Declaration[] {
         {
             const match = /^\s*@([^\s\x21-\x2f\x3a-\x40\x5b-\x5e\x7b-\x7e]+)/.exec(text);
             if (match !== null) {
-                if (funcStart !== undefined) {
+                if (funcStart !== undefined && funcEndLine != null && funcEndChar != null) {
                     funcStart.bodyRange = funcStart.bodyRange.with({ end: new Position(funcEndLine, funcEndChar) });
                 }
                 funcStart = new Declaration(
@@ -85,7 +85,7 @@ export function readDeclarations(input: string): Declaration[] {
             }
         }
     }
-    if (funcStart !== undefined) {
+    if (funcStart !== undefined && funcEndLine != null && funcEndChar != null) {
         funcStart.bodyRange = funcStart.bodyRange.with({ end: new Position(funcEndLine, funcEndChar) });
     }
     return symbols;
