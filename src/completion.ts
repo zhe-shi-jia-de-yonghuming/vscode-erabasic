@@ -1,4 +1,5 @@
-import { CompletionItem, CompletionItemKind } from "vscode";
+import { CompletionItem, CompletionItemKind, Location, MarkdownString, Position, SymbolKind, TextDocument, Uri, workspace } from "vscode";
+import { Declaration, DeclarationProvider, readDeclarations } from "./declaration";
 import { LocalizeUD } from "./localize";
 
 const Keyword = CompletionItemKind.Keyword;
@@ -2743,4 +2744,102 @@ export const GetBuiltinComplationItems = () => {
         },
         //#endregion
     ]);
+}
+export class CompletionItemRepository {
+    private cache: Map<string, CompletionItem[]> = new Map();
+
+    constructor(private provider: DeclarationProvider) {
+        provider.onDidChange((e) => {
+            this.cache.set(e.uri.fsPath, e.decls.filter((d) => d.isGlobal)
+                .map((d) => declToCompletionItem(d)));
+        });
+        provider.onDidDelete((e) => {
+            this.cache.delete(e.uri.fsPath);
+        });
+        provider.onDidReset((e) => {
+            this.cache.clear();
+        });
+    }
+
+    public sync(): Promise<void> {
+        return this.provider.sync();
+    }
+
+    public *find(document: TextDocument, position: Position): IterableIterator<CompletionItem> {
+        yield* this.findInCurrentDocument(document, position);
+        const ws = workspace.getWorkspaceFolder(document.uri);
+        if (ws === undefined) {
+            return;
+        }
+        const fresh: Set<string> = new Set([document.uri.fsPath]);
+        for (const doc of workspace.textDocuments) {
+            if (!doc.isDirty) {
+                continue;
+            }
+            if (doc === document) {
+                continue;
+            }
+            if (!this.cache.has(doc.uri.fsPath)) {
+                continue;
+            }
+            if (!this.provider.reachable(ws, doc.uri.fsPath)) {
+                continue;
+            }
+            fresh.add(doc.uri.fsPath);
+            yield* this.findInDocument(doc);
+        }
+        for (const [path, defs] of this.cache.entries()) {
+            // BuiltinDeclarationFiles と BuiltinComplationItems で多重定義になってるからファイルの方を切る
+            if (this.provider.isBuiltin(path)) {
+                continue;
+            }
+
+            if (fresh.has(path)) {
+                continue;
+            }
+            if (!this.provider.reachable(ws, path)) {
+                continue;
+            }
+            yield* defs.filter((d) => d).map((d) => d);
+        }
+    }
+
+    private findInCurrentDocument(document: TextDocument, position: Position): CompletionItem[] {
+        return readDeclarations(document.getText())
+            .filter((d) => d.visible(position))
+            .map((d) => declToCompletionItem(d));
+    }
+
+    private findInDocument(document: TextDocument): CompletionItem[] {
+        return readDeclarations(document.getText())
+            .filter((d) => d.isGlobal)
+            .map((d) => declToCompletionItem(d));
+    }
+}
+
+export function declToCompletionItem(decreation: Declaration): CompletionItem {
+    const symbolKind = decreation.kind;
+    let kind: CompletionItemKind = toCompletionItemKind(symbolKind);
+
+    return {
+        label: decreation.name,
+        kind: kind,
+        detail: `(${getName(kind)}) ${decreation.name}`,
+        documentation: new MarkdownString(decreation.docmentation),
+    };
+}
+
+function getName(kind: CompletionItemKind) {
+    return CompletionItemKind[kind];
+}
+
+function toCompletionItemKind(symbolKind: SymbolKind):CompletionItemKind {
+    switch (symbolKind) {
+        case SymbolKind.Variable:
+            return CompletionItemKind.Variable;
+        case SymbolKind.Function:
+            return CompletionItemKind.Function;
+        default:
+            return undefined;
+    }
 }

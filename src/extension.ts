@@ -5,9 +5,10 @@ import {
     DocumentSelector, DocumentSymbolProvider, ExtensionContext, Position, SymbolInformation, TextDocument, WorkspaceSymbolProvider,
 } from "vscode";
 
-import { GetBuiltinComplationItems } from "./completion";
-import { DeclarationProvider } from "./declaration";
+import { GetBuiltinComplationItems, CompletionItemRepository, declToCompletionItem } from "./completion";
+import { DeclarationProvider, readDeclarations } from "./declaration";
 import { DefinitionRepository } from "./definition";
+import { EraHoverProvider } from "./hover";
 import { readSymbolInformations, SymbolInformationRepository } from "./symbol";
 
 export let extensionPath: string;
@@ -16,10 +17,11 @@ export function activate(context: ExtensionContext) {
     const selector: DocumentSelector = { language: "erabasic" };
     const provider: DeclarationProvider = new DeclarationProvider(context);
     extensionPath = context.extensionPath;
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(selector, new EraBasicCompletionItemProvider()));
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(selector, new EraBasicCompletionItemProvider(provider)));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(selector, new EraBasicDefinitionProvider(provider)));
     context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(selector, new EraBasicDocumentSymbolProvider()));
     context.subscriptions.push(vscode.languages.registerWorkspaceSymbolProvider(new EraBasicWorkspaceSymbolProvider(provider)));
+    context.subscriptions.push(vscode.languages.registerHoverProvider(selector, new EraHoverProvider(provider)));
     context.subscriptions.push(provider);
 }
 
@@ -28,9 +30,31 @@ export function deactivate() {
 }
 
 class EraBasicCompletionItemProvider implements CompletionItemProvider {
-    public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken, context: CompletionContext): CompletionItem[] {
-        // 可視範囲のシンボル数がメガテンで 65000 を越えるため諸々見送り
-        return GetBuiltinComplationItems();
+    private repo: CompletionItemRepository;
+    private option: EraBasicOption;
+
+    constructor(provider: DeclarationProvider) {
+        this.repo = new CompletionItemRepository(provider);
+        this.option = new EraBasicOption();
+    }
+
+    public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
+        if (!this.option.completionWorkspaceSymbols) {
+            return Promise.resolve(GetBuiltinComplationItems().concat(
+                readDeclarations(document.getText())
+                    .filter(d=> d.visible(position))
+                    .map(decreation => {
+                        return declToCompletionItem(decreation);
+                    })
+            ));
+        }
+
+        return this.repo.sync().then(() => 
+            {
+                const res = GetBuiltinComplationItems().concat(...this.repo.find(document, position));
+                return res;
+            }
+        );
     }
 }
 
@@ -61,5 +85,11 @@ class EraBasicWorkspaceSymbolProvider implements WorkspaceSymbolProvider {
 
     public provideWorkspaceSymbols(query: string, token: CancellationToken): Promise<SymbolInformation[]> {
         return this.repo.sync().then(() => Array.from(this.repo.find(query)));
+    }
+}
+
+export class EraBasicOption {
+    public get completionWorkspaceSymbols() : boolean {
+        return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceSymbols", false);
     }
 }
