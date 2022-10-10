@@ -32,15 +32,15 @@ export function deactivate() {
 
 class EraBasicCompletionItemProvider implements CompletionItemProvider {
     private repo: CompletionItemRepository;
-    private option: EraBasicOption;
+    private options: EraBasicOption;
 
     constructor(provider: DeclarationProvider) {
         this.repo = new CompletionItemRepository(provider);
-        this.option = new EraBasicOption();
+        this.options = new EraBasicOption();
     }
 
     public provideCompletionItems(document: TextDocument, position: Position, token: CancellationToken): Promise<CompletionItem[]> {
-        if (!this.option.completionWorkspaceSymbols) {
+        if (!this.options.completionWorkspaceSymbols) {
             return Promise.resolve(GetBuiltinComplationItems().concat(
                 readDeclarations(document.getText())
                     .filter(d=> d.visible(position))
