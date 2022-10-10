@@ -369,5 +369,6 @@
 	"completion.build-in.XML_REMOVEATTRIBUTE_BYNAME": "文字列指定のXML_REMOVEATTRIBUTE",
 	"completion.build-in.GETTEXTBOX": "テキストボックスに入力されている文字列を返す",
 	"completion.build-in.SETTEXTBOX": "テキストボックスを指定の文字列で置き換える",
-	"completion.build-in.INPUTANY": "数値型、文字列型両方の入力を受け付けるINPUT"
+	"completion.build-in.INPUTANY": "数値型、文字列型両方の入力を受け付けるINPUT",
+	"completion.build-in.ERDNAME": "第一引数のERD変数の、第二引数で指定したインデックスの要素名を返す。第三引数で次元指定可能"
 }
