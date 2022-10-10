@@ -58,11 +58,11 @@ export function readDeclarations(input: string): Declaration[] {
         const commentMatch = /\s*;{3}(@\S+)?(.*)/.exec(text);
         if (commentMatch !== null) {
             if (commentMatch[1]) {
-                docComment = docComment.concat("\n\n*",commentMatch[1],"* -",commentMatch[2]);
+                docComment = docComment.concat("\n\n*", commentMatch[1], "* -", commentMatch[2]);
                 continue;
             }
 
-            docComment = docComment.concat("\n",commentMatch[2]);
+            docComment = docComment.concat("\n", commentMatch[2]);
             continue;
         }
 
@@ -134,7 +134,7 @@ class BuiltinDeclarationFiles {
 export class WorkspaceEncoding {
     private encoding: string[][];
 
-    public get encodings() : string[][] {
+    public get encodings(): string[][] {
         return this.encoding;
     }
 
@@ -234,7 +234,7 @@ export class DeclarationProvider implements Disposable {
         return path.startsWith(ws.uri.fsPath) || this.builtin.has(path);
     }
 
-    public isBuiltin(path):boolean{
+    public isBuiltin(path): boolean {
         return this.builtin.has(path);
     }
 
@@ -283,58 +283,58 @@ export class DeclarationProvider implements Disposable {
 
         // マルチプロセスにしようとした残骸
         if (this.options.completionWorkspaceByMultiProcess) {
-            
+
             const targ = [...this.dirty];
             const cps = cpus();
             const bundle = Math.ceil(targ.length / cps.length);
-            const sliced = cps.map((cpu, i) => targ.slice(i * bundle, (i + 1) * bundle).map(([a,b])=>[a,b.fsPath]));
-            const workers = sliced.map(arr=>{
-                const path = join(__dirname,"declarationWorker.js");
-                return new Worker(path, {workerData: {dirty: arr,encodings:this.encoding.encodings}});
+            const sliced = cps.map((cpu, i) => targ.slice(i * bundle, (i + 1) * bundle).map(([a, b]) => [a, b.fsPath]));
+            const workers = sliced.map(arr => {
+                const path = join(__dirname, "declarationWorker.js");
+                return new Worker(path, { workerData: { dirty: arr, encodings: this.encoding.encodings } });
             })
-            
-            const ress:WorkerResponse[][] = await Promise.all( workers.map((w,i)=>{
-                return new Promise<WorkerResponse[]>((resolve, reject)=>{
-                    w.on("message", (res:WorkerResponse[])=>{
+
+            const ress: WorkerResponse[][] = await Promise.all(workers.map((w, i) => {
+                return new Promise<WorkerResponse[]>((resolve, reject) => {
+                    w.on("message", (res: WorkerResponse[]) => {
                         resolve(res);
                     });
-                    w.on("error",(err)=>{
+                    w.on("error", (err) => {
                         console.log(`${i}:${err}`);
                         reject(err);
                     });
-                    w.on("exit",(n)=>{
+                    w.on("exit", (n) => {
                         console.log(`${i}: quit ${n}`);
                     });
                 })
             }));
-            
-            for (const rec of ress.flatMap(array=>array)) {
+
+            for (const rec of ress.flatMap(array => array)) {
                 if (rec.declarations === undefined) {
                     this.dirty.delete(rec.path);
                     this.onDidDeleteEmitter.fire(new DeclarationDeleteEvent(Uri.file(rec.fspath)));
                 }
                 if (this.dirty.delete(rec.path)) {
-                    const decls:Map<string,Declaration>=new Map();
+                    const decls: Map<string, Declaration> = new Map();
                     for (const decl of rec.declarations) {
-                        decls.set(decl.name,new Declaration(
+                        decls.set(decl.name, new Declaration(
                             decl.name,
                             decl.kind,
                             decls.get(decl.container),
-                            new Range(decl.nameRange.start.line,decl.nameRange.start.character,decl.nameRange.end.line,decl.nameRange.end.character),
-                            new Range(decl.bodyRange.start.line,decl.bodyRange.start.character,decl.bodyRange.end.line,decl.bodyRange.end.character),
+                            new Range(decl.nameRange.start.line, decl.nameRange.start.character, decl.nameRange.end.line, decl.nameRange.end.character),
+                            new Range(decl.bodyRange.start.line, decl.bodyRange.start.character, decl.bodyRange.end.line, decl.bodyRange.end.character),
                             decl.docmentation,
                         ));
                     }
-        
+
                     this.onDidChangeEmitter.fire(new DeclarationChangeEvent(Uri.file(rec.fspath), [...decls.values()]));
                 }
             }
 
             return;
         }
-        
 
-        await Promise.all([...this.dirty].map(async ([path, uri])=>{
+
+        await Promise.all([...this.dirty].map(async ([path, uri]) => {
             const input = await new Promise<string | undefined>((resolve, reject) => {
                 fs.readFile(path, (err, data) => {
                     if (err) {

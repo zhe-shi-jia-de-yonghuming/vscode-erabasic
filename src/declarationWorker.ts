@@ -5,9 +5,9 @@ import { Position, Range, SymbolKind, Uri } from "vscode";
 import { parentPort, workerData } from "worker_threads";
 import { Declaration } from "./declaration";
 
-const wkdata:{dirty:[[string, string]],encodings:string[][]} = workerData;
+const wkdata: { dirty: [[string, string]], encodings: string[][] } = workerData;
 
-Promise.all(wkdata.dirty.map(async ([path, fspath]):Promise<WorkerResponse>=>{
+Promise.all(wkdata.dirty.map(async ([path, fspath]): Promise<WorkerResponse> => {
     const input = await new Promise<string | undefined>((resolve, reject) => {
         readFile(path, (err, data) => {
             if (err) {
@@ -17,40 +17,40 @@ Promise.all(wkdata.dirty.map(async ([path, fspath]):Promise<WorkerResponse>=>{
                     reject(err);
                 }
             } else {
-                const decoded = decode(data, detect(path,data,wkdata.encodings));
+                const decoded = decode(data, detect(path, data, wkdata.encodings));
                 resolve(decoded);
             }
         });
     });
     if (input === undefined) {
-        return {path:path, fspath:fspath, declarations: undefined};
+        return { path: path, fspath: fspath, declarations: undefined };
     }
 
-    return {path: path, fspath:fspath, declarations: readDeclarations(input)};
-})).then(res=>parentPort.postMessage(res));
+    return { path: path, fspath: fspath, declarations: readDeclarations(input) };
+})).then(res => parentPort.postMessage(res));
 
-export interface WorkerResponse{
-    path:string;
-    fspath:string;
-    declarations:DeclarationObj[] | undefined;
+export interface WorkerResponse {
+    path: string;
+    fspath: string;
+    declarations: DeclarationObj[] | undefined;
 }
 
-interface UriObj extends Pick<Uri,"fsPath">{
+interface UriObj extends Pick<Uri, "fsPath"> {
 }
 
 interface PositionObj {
-    line:number;
-    character:number;
+    line: number;
+    character: number;
 }
 interface RangeObj {
     start: PositionObj;
-    end:PositionObj;
+    end: PositionObj;
 }
 
-export interface DeclarationObj extends Omit<Declaration, "visible" | "isGlobal" | "container" | "bodyRange" | "nameRange">{
-    container : string|null;
-    bodyRange : RangeObj;
-    nameRange : RangeObj;
+export interface DeclarationObj extends Omit<Declaration, "visible" | "isGlobal" | "container" | "bodyRange" | "nameRange"> {
+    container: string | null;
+    bodyRange: RangeObj;
+    nameRange: RangeObj;
 }
 
 export function readDeclarations(input: string): DeclarationObj[] {
@@ -63,11 +63,11 @@ export function readDeclarations(input: string): DeclarationObj[] {
         const commentMatch = /\s*;{3}(@\S+)?(.*)/.exec(text);
         if (commentMatch !== null) {
             if (commentMatch[1]) {
-                docComment = docComment.concat("\n\n*",commentMatch[1],"* -",commentMatch[2]);
+                docComment = docComment.concat("\n\n*", commentMatch[1], "* -", commentMatch[2]);
                 continue;
             }
 
-            docComment = docComment.concat("\n",commentMatch[2]);
+            docComment = docComment.concat("\n", commentMatch[2]);
             continue;
         }
 
@@ -79,27 +79,27 @@ export function readDeclarations(input: string): DeclarationObj[] {
                     funcStart.bodyRange.end.character = funcEndChar;
                 }
                 funcStart = {
-                    name:match[1],
-                    kind:11,//SymbolKind.Function
-                    container:undefined,
-                    nameRange:{
-                        start:{
-                            line:line,
-                            character:match[0].length - match[1].length
+                    name: match[1],
+                    kind: 11,//SymbolKind.Function
+                    container: undefined,
+                    nameRange: {
+                        start: {
+                            line: line,
+                            character: match[0].length - match[1].length
                         },
-                        end:{
-                            line:line,
-                            character:match[0].length
+                        end: {
+                            line: line,
+                            character: match[0].length
                         }
                     },
-                    bodyRange:{
-                        start:{
-                            line:line,
-                            character:0
+                    bodyRange: {
+                        start: {
+                            line: line,
+                            character: 0
                         },
-                        end:{
-                            line:line,
-                            character:text.length
+                        end: {
+                            line: line,
+                            character: text.length
                         }
                     },
                     docmentation: docComment,
@@ -115,27 +115,27 @@ export function readDeclarations(input: string): DeclarationObj[] {
             const match = /^\s*#(DIMS?(?:\s+[A-Z]+)*|DEFINE)\s+([^\s\x21-\x2f\x3a-\x40\x5b-\x5e\x7b-\x7e]+)/.exec(text);
             if (match !== null) {
                 symbols.push({
-                    name:match[2],
-                    kind:match[1].startsWith("DIM") ? 12 : 13,//SymbolKind.Variable : SymbolKind.Constant,
+                    name: match[2],
+                    kind: match[1].startsWith("DIM") ? 12 : 13,//SymbolKind.Variable : SymbolKind.Constant,
                     container: funcStart ? funcStart.name : undefined,
-                    nameRange:{
-                        start:{
-                            line:line,
-                            character:match[0].length - match[2].length
+                    nameRange: {
+                        start: {
+                            line: line,
+                            character: match[0].length - match[2].length
                         },
-                        end:{
-                            line:line,
-                            character:match[0].length
+                        end: {
+                            line: line,
+                            character: match[0].length
                         }
                     },
-                    bodyRange:{
-                        start:{
-                            line:line,
-                            character:0
+                    bodyRange: {
+                        start: {
+                            line: line,
+                            character: 0
                         },
-                        end:{
-                            line:line,
-                            character:text.length
+                        end: {
+                            line: line,
+                            character: text.length
                         }
                     },
                     docmentation: docComment,
@@ -152,7 +152,7 @@ export function readDeclarations(input: string): DeclarationObj[] {
     return symbols;
 }
 
-function detect(path: string, data: Buffer,encodings:string[][]): string {
+function detect(path: string, data: Buffer, encodings: string[][]): string {
     if (data[0] === 0xef && data[1] === 0xbb && data[2] === 0xbf) {
         return "utf8";
     }
@@ -169,7 +169,7 @@ function* iterlines(input: string): IterableIterator<[number, string]> {
     const lines = input.split(/\r?\n/);
     loop: for (let i = 0; i < lines.length; i++) {
         const text = lines[i];
-        if (/^\s*(?:$|;(?![!#];))/.test(text)) {
+        if (/^\s*(?:$|;(?![!#;];))/.test(text)) {
             continue;
         }
         if (/^\s*(?:;[!#];\s*)?\[SKIPSTART\]/.test(text)) {

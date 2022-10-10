@@ -2833,7 +2833,7 @@ function getName(kind: CompletionItemKind) {
     return CompletionItemKind[kind];
 }
 
-function toCompletionItemKind(symbolKind: SymbolKind):CompletionItemKind {
+function toCompletionItemKind(symbolKind: SymbolKind): CompletionItemKind {
     switch (symbolKind) {
         case SymbolKind.Variable:
             return CompletionItemKind.Variable;

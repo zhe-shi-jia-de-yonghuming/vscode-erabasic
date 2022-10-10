@@ -43,18 +43,17 @@ class EraBasicCompletionItemProvider implements CompletionItemProvider {
         if (!this.options.completionWorkspaceSymbols) {
             return Promise.resolve(GetBuiltinComplationItems().concat(
                 readDeclarations(document.getText())
-                    .filter(d=> d.visible(position))
+                    .filter(d => d.visible(position))
                     .map(decreation => {
                         return declToCompletionItem(decreation);
                     })
             ));
         }
 
-        return this.repo.sync().then(() => 
-            {
-                const res = GetBuiltinComplationItems().concat(...this.repo.find(document, position));
-                return res;
-            }
+        return this.repo.sync().then(() => {
+            const res = GetBuiltinComplationItems().concat(...this.repo.find(document, position));
+            return res;
+        }
         );
     }
 }
@@ -90,10 +89,10 @@ class EraBasicWorkspaceSymbolProvider implements WorkspaceSymbolProvider {
 }
 
 export class EraBasicOption {
-    public get completionWorkspaceSymbols() : boolean {
+    public get completionWorkspaceSymbols(): boolean {
         return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceSymbols", false);
     }
-    public get completionWorkspaceByMultiProcess() : boolean {
+    public get completionWorkspaceByMultiProcess(): boolean {
         return vscode.workspace.getConfiguration("erabasic").get("completionWorkspaceByMultiProcess", false);
     }
 }
