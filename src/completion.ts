@@ -1,4 +1,4 @@
-import { CompletionItem, CompletionItemKind, Location, MarkdownString, Position, SymbolKind, TextDocument, Uri, workspace } from "vscode";
+import { CompletionItem, CompletionItemKind, MarkdownString, Position, SymbolKind, TextDocument, workspace } from "vscode";
 import { Declaration, DeclarationProvider, readDeclarations } from "./declaration";
 import { LocalizeUD } from "./localize";
 
@@ -2833,7 +2833,7 @@ function getName(kind: CompletionItemKind) {
     return CompletionItemKind[kind];
 }
 
-function toCompletionItemKind(symbolKind: SymbolKind):CompletionItemKind {
+function toCompletionItemKind(symbolKind: SymbolKind): CompletionItemKind {
     switch (symbolKind) {
         case SymbolKind.Variable:
             return CompletionItemKind.Variable;
