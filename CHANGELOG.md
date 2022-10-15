@@ -1,5 +1,8 @@
 # Change Log
 All notable changes to the "erabasic-EM+EE" extension will be documented in this file.
+## [0.5.1] - 2022-10-15
+- Merged [coeracanth's commit](https://github.com/CatQOh/vscode-erabasic/pull/4)
+
 ## [0.5.0] - 2022-10-10
 - Compatible with latest version
 - Merged [coeracanth's commit](https://github.com/CatQOh/vscode-erabasic/pull/3)
