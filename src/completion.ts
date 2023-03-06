@@ -2318,6 +2318,18 @@ export const GetBuiltinComplationItems = () => {
             kind: Variable,
         },
         {
+            label: "DAYNAME",
+            kind: Variable,
+        },
+        {
+            label: "TIMENAME",
+            kind: Variable,
+        },
+        {
+            label: "MONEYNAME",
+            kind: Variable,
+        },
+        {
             label: "GAMEBASE_AUTHER",
             kind: Variable,
         },
@@ -2742,6 +2754,164 @@ export const GetBuiltinComplationItems = () => {
             label: "SETTEXTBOX",
             kind: Function,
         },
+		{
+			label: "DT_CREATE",
+			kind: Function,
+		},
+		{
+			label: "DT_EXIST",
+			kind: Function,
+		},
+		{
+			label: "DT_RELEASE",
+			kind: Function,
+		},
+		{
+			label: "DT_CLEAR",
+			kind: Function,
+		},
+		{
+			label: "DT_NOCASE",
+			kind: Function,
+		},
+		{
+			label: "DT_COLUMN_ADD",
+			kind: Function,
+		},
+		{
+			label: "DT_COLUMN_EXIST",
+			kind: Function,
+		},
+		{
+			label: "DT_COLUMN_REMOVE",
+			kind: Function,
+		},
+		{
+			label: "DT_COLUMN_LENGTH",
+			kind: Function,
+		},
+		{
+			label: "DT_COLUMN_OPTIONS",
+			kind: Function,
+		},
+		{
+			label: "DT_COLUMN_NAMES",
+			kind: Function,
+		},
+		{
+			label: "DT_ROW_ADD",
+			kind: Function,
+		},
+		{
+			label: "DT_ROW_SET",
+			kind: Function,
+		},
+		{
+			label: "DT_ROW_REMOVE",
+			kind: Function,
+		},
+		{
+			label: "DT_ROW_LENGTH",
+			kind: Function,
+		},
+		{
+			label: "DT_CELL_GET",
+			kind: Function,
+		},
+		{
+			label: "DT_CELL_GETS",
+			kind: Function,
+		},
+		{
+			label: "DT_CELL_ISNULL",
+			kind: Function,
+		},
+		{
+			label: "DT_CELL_ISNULL",
+			kind: Function,
+		},
+		{
+			label: "DT_SELECT",
+			kind: Function,
+		},
+		{
+			label: "DT_TOXML",
+			kind: Function,
+		},
+		{
+			label: "DT_FROMXML",
+			kind: Function,
+		},
+		{
+			label: "MOVETEXTBOX",
+			kind: Function,
+		},
+		{
+			label: "RESUMETEXTBOX",
+			kind: Function,
+		},
+		{
+			label: "GGETPEN",
+			kind: Function,
+		},
+		{
+			label: "GGETPENWIDTH",
+			kind: Function,
+		},
+		{
+			label: "GGETBRUSH",
+			kind: Function,
+		},
+		{
+			label: "TOOLTIP_CUSTOM",
+			kind: Function,
+		},
+		{
+			label: "TOOLTIP_SETFONT",
+			kind: Function,
+		},
+		{
+			label: "TOOLTIP_SETFONTSIZE",
+			kind: Function,
+		},
+		{
+			label: "TOOLTIP_FORMAT",
+			kind: Function,
+		},
+		{
+			label: "FLOWINPUT",
+			kind: Function,
+		},
+		{
+			label: "MOUSEB",
+			kind: Function,
+		},
+		{
+			label: "SPRITEDISPOSEALL",
+			kind: Function,
+		},
+		{
+			label: "SKIPLOG",
+			kind: Function,
+		},
+		{
+			label: "BINPUT",
+			kind: Function,
+		},
+		{
+			label: "BINPUTS",
+			kind: Function,
+		},
+		{
+			label: "GDRAWLINE",
+			kind: Function,
+		}
+		/**
+		{
+			label: "",
+			kind: Function,
+		},
+		**/
         //#endregion
     ]);
 }

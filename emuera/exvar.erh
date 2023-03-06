@@ -149,6 +149,11 @@
 #DIMS GLOBALNAME,  _  ; global.csv
 #DIMS GLOBALSNAME, _  ; globals.csv
 
+#DIMS DAYNAME,     _  ; day.csv
+#DIMS TIMENAME,    _  ; time.csv
+#DIMS MONEYNAME,   _  ; money.csv
+
+
 ;; String Data
 
 #DIMS          STR,     _  ; str.csv
