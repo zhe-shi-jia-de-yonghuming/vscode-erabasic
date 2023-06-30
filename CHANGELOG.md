@@ -1,5 +1,9 @@
 # Change Log
 All notable changes to the "erabasic-EM+EE" extension will be documented in this file.
+
+## [0.7.1] - 2023-06-30
+- Now supporting for Chinese by merging [CK Rainbow's commits](https://github.com/CatQOh/vscode-erabasic/pull/5)
+
 ## [0.7.0] - 2023-06-02
 - Compatible with latest version
 - Added EM+EE's reference(exmeth) of function and instruction
