@@ -364,7 +364,7 @@
 							"match": "(?!\\d)[^\\x00-\\x2f\\x3a-\\x40\\x5b-\\x5e\\x60\\x7b-\\x7e]+"
 						},
 						{
-							"begin": "(?=,|\\()",
+							"begin": "(?= |;|,|\\()",
 							"end": "(?=$)",
 							"patterns": [
 								{
@@ -389,7 +389,17 @@
 							"end": "(?= *(?:,|\\(|$))",
 							"patterns": [
 								{
-									"include": "#form-string"
+									
+									"begin": "(?=;)",
+									"end": "(?=$)",
+									"patterns": [
+										{
+											"include": "#comment"
+										}
+									]
+								},
+								{
+								"include": "#form-string"
 								}
 							]
 						},
