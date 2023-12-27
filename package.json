@@ -71,6 +71,11 @@
                         "default": false,
                         "type": "boolean",
                         "description": "%configuration.completionWorkspaceByMultiProcess.description%"
+                    },
+                    "erabasic.functionIndent": {
+                        "default": false,
+                        "type": "boolean",
+                        "description": "%configuration.functionIndent.description%"
                     }
                 }
             }

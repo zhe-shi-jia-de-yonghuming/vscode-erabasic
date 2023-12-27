@@ -1,4 +1,5 @@
 {
     "configuration.completionWorkspaceSymbols.description": "包含工作区中符号的以供补全。",
-    "configuration.completionWorkspaceByMultiProcess.description": "***实验功能***\n\n使用多线程对工作区进行搜索。根据环境不同，有可能加速输入补全候选项的显示等。但该功能并不稳定。"
+    "configuration.completionWorkspaceByMultiProcess.description": "***实验功能***\n\n使用多线程对工作区进行搜索。根据环境不同，有可能加速输入补全候选项的显示等。但该功能并不稳定。",
+    "configuration.functionIndent.description": "函数体将会自带一格缩进。"
 }
