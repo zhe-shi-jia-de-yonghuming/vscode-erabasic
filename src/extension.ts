@@ -26,7 +26,7 @@ import { DefinitionRepository } from "./definition";
 import { EraHoverProvider } from "./hover";
 import { readSymbolInformations, SymbolInformationRepository } from "./symbol";
 import { EraBasicIndenter } from "./indent";
-import { ENODEV } from "constants";
+import { subscribeToDocumentChanges } from "./diagnostics";
 
 export let extensionPath: string;
 
@@ -35,6 +35,7 @@ export function activate(context: ExtensionContext) {
   const provider: DeclarationProvider = new DeclarationProvider(context);
   const diagnostics =
     vscode.languages.createDiagnosticCollection("erabasicIndenter");
+  subscribeToDocumentChanges(context, diagnostics);
   extensionPath = context.extensionPath;
   context.subscriptions.push(
     vscode.languages.registerCompletionItemProvider(
@@ -169,23 +170,10 @@ class EraBasicDocumentFormattingEditProvider
 {
   private diagonostics: vscode.DiagnosticCollection;
   private config: vscode.WorkspaceConfiguration;
-  private indenter: EraBasicIndenter;
 
   constructor(diagnostics: vscode.DiagnosticCollection) {
     this.diagonostics = diagnostics;
     this.config = vscode.workspace.getConfiguration("erabasic");
-    this.indenter = new EraBasicIndenter(this.config, null);
-    // vscode.workspace.onDidChangeTextDocument(
-    //   function (event: vscode.TextDocumentChangeEvent) {
-    //     if (diagnostics.get(event.document.uri).length > 0) {
-    //       this.indent(
-    //         event.document,
-    //         new vscode.Range(0, 0, event.document.lineCount, 0),
-    //         this.indenter
-    //       );
-    //     }
-    //   }
-    // );
   }
 
   provideDocumentRangeFormattingEdits(
@@ -194,9 +182,11 @@ class EraBasicDocumentFormattingEditProvider
     options: vscode.FormattingOptions,
     token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.TextEdit[]> {
-    // const indenter = new EraBasicIndenter(this.config, options);
-    this.indenter.updateOptions(options);
-    return this.indent(document, range, this.indenter);
+    var indenter = new EraBasicIndenter(
+      this.config,
+      options
+    )
+    return this.indent(document, range, indenter);
   }
 
   provideDocumentFormattingEdits(
@@ -204,12 +194,14 @@ class EraBasicDocumentFormattingEditProvider
     options: vscode.FormattingOptions,
     token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.TextEdit[]> {
-    // const indenter = new EraBasicIndenter(this.config, options);
-    this.indenter.updateOptions(options);
+    var indenter = new EraBasicIndenter(
+      this.config,
+      options
+    )
     return this.indent(
       document,
       new vscode.Range(0, 0, document.lineCount, 0),
-      this.indenter
+      indenter
     );
   }
 
@@ -218,17 +210,13 @@ class EraBasicDocumentFormattingEditProvider
     range: vscode.Range,
     indenter: EraBasicIndenter
   ): vscode.TextEdit[] {
+    if (this.diagonostics.get(document.uri) !== undefined) {
+      // show a notification for you cannot format a document with errors here
+      vscode.window.showErrorMessage("Cannot format a document with errors");
+      return [];
+    }
+    
     const ret: vscode.TextEdit[] = [];
-    // const diags = this.diagonostics.get(document.uri);
-    let nextDiags: vscode.Diagnostic[] = [];
-    // if (diags !== undefined) {
-    //   nextDiags = diags.filter(
-    //     (d) =>
-    //       d.range.start.isBefore(range.end) && d.range.end.isAfter(range.start)
-    //   );
-    // } else {
-    //   nextDiags = [];
-    // }
 
     for (let line = range.start.line; line <= range.end.line; line++) {
       indenter.updateNext();
@@ -239,20 +227,7 @@ class EraBasicDocumentFormattingEditProvider
       indenter.updateCurrent();
       const result = indenter.setIndent(textLine.text);
 
-      if (indenter.error.diagnostic !== null) {
-        nextDiags.push(indenter.error.diagnostic);
-        indenter.error.diagnostic = null;
-      }
-      if (!indenter.error.hasError && result !== textLine.text) {
-        ret.push(new vscode.TextEdit(textLine.range, result));
-      }
-    }
-
-    this.diagonostics.delete(document.uri);
-
-    this.diagonostics.set(document.uri, nextDiags);
-    
-    this.indenter.reset();
+      ret.push(new vscode.TextEdit(textLine.range, result)); }
 
     return ret;
   }
