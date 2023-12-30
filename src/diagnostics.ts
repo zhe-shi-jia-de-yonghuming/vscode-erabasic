@@ -23,22 +23,13 @@ export function refreshDiagnostics(
   for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
     const lineOfText = doc.lineAt(lineIndex);
     indenter.resolve(lineOfText);
-    if (indenter.error.diagnostic !== null) {
-      diagnostics.push(indenter.error.diagnostic);
-      indenter.error.diagnostic = null;
-    }
   }
-  var blocks = indenter.getBlocks();
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks.getByIndex(i);
-    if (block) {
-      var diagnostic = new vscode.Diagnostic(
-        block.controlRange,
-        `Missing end identifier for block ${BlockType[block.type]}.`
-      );
-      diagnostics.push(diagnostic);
-    }
+  
+  indenter.blocks.clear();
+  if (diagnostics.length > 0) {
+    diagnostics.concat(indenter.blocks.error);
   }
+  
   blockDiagnostics.set(doc.uri, diagnostics);
 }
 

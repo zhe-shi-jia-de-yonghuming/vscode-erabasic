@@ -24,11 +24,6 @@ type IndenterBlock = {
   controlRange: vscode.Range;
 };
 
-type IndenterError = {
-  hasError: boolean;
-  diagnostic: vscode.Diagnostic;
-};
-
 const stmIF = /\bIF\b/;
 const stmELSE = /\b(ELSEIF|ELSE)\b/;
 const stmENDIF = /\bENDIF\b/;
@@ -77,12 +72,18 @@ const stmComment = /;\S*/;
 class IndenterBlockCollection {
   private blocks: IndenterBlock[];
 
+  private currentDiags: vscode.Diagnostic[] = [];
+
   public constructor(blocks: IndenterBlock[] = []) {
     this.blocks = blocks;
   }
 
   public get length(): number {
     return this.blocks.length;
+  }
+
+  public get error(): vscode.Diagnostic[] {
+    return this.currentDiags;
   }
 
   public getByIndex(index: number): IndenterBlock | null {
@@ -99,8 +100,15 @@ class IndenterBlockCollection {
     return this.blocks[this.blocks.length - 1].type === type;
   }
 
+  /**
+   * Pushes a new block to the blocks array based on the given type, textLine, and regex.
+   *
+   * @param {BlockType} type - the type of the block
+   * @param {vscode.TextLine} textLine - the text line to search for matches
+   * @param {RegExp} regex - the regular expression to match against the text line
+   */
   public push(type: BlockType, textLine: vscode.TextLine, regex: RegExp) {
-    var result: RegExpExecArray = regex.exec(textLine.text);
+    const result: RegExpExecArray = regex.exec(textLine.text);
     if (result) {
       this.blocks.push({
         type: type,
@@ -114,99 +122,119 @@ class IndenterBlockCollection {
     }
   }
 
+  /**
+   * Pop a block from the stack and check if it matches the given end block type.
+   *
+   * @param {BlockType} endBlockType - The type of the end block to match.
+   * @param {vscode.TextLine} textLine - The text line containing the block.
+   * @param {RegExp} regex - The regular expression to match the block.
+   * @return {vscode.Diagnostic | null} - The diagnostic if there is an error, otherwise null.
+   */
   public pop(
     endBlockType: BlockType,
     textLine: vscode.TextLine,
-    regex: RegExp
+    regex: RegExp | null = null
   ): vscode.Diagnostic | null {
-    var result: RegExpExecArray = regex.exec(textLine.text);
-    if (result) {
-      var range = new vscode.Range(
-        textLine.lineNumber,
-        result.index,
-        textLine.lineNumber,
-        result.index + result[0].length
-      );
+    // special case for SIF
+    if (regex === null) {
+      this.blocks.pop();
     }
+
+    const result = regex.exec(textLine.text);
+
+    const range = new vscode.Range(
+      textLine.lineNumber,
+      result.index,
+      textLine.lineNumber,
+      result.index + result[0].length
+    );
+
     if (this.blocks.length <= 0) {
-      return new vscode.Diagnostic(
+      this.addIndentDiagnostics(
         range,
         `Unpaired start identifier for block ${BlockType[endBlockType]}.`
       );
     }
-    var last_block = this.blocks[this.blocks.length - 1];
-    if (last_block.type !== endBlockType) {
-      if (this.blocks.length >= 2) {
-        // if the outer layer block match with the end block
-        // we can assume this block missing an end block identifier
-        var prev_block = this.blocks[this.blocks.length - 2];
-        if (prev_block.type === endBlockType) {
-          this.blocks.pop();
-          return new vscode.Diagnostic(
-            last_block.controlRange,
-            `Missing end identifier for block ${BlockType[last_block.type]}.`
-          );
-        }
-      }
-      // otherwise there might be redundant end block identifier
-      // better not pop the block out
-      return new vscode.Diagnostic(
-        range,
-        `Unpaired end identifier for block ${BlockType[endBlockType]}.`
-      );
-    } else {
+
+    const lastBlock = this.blocks[this.blocks.length - 1];
+
+    // if block type matches, juse pop the block
+    if (lastBlock.type === endBlockType) {
       this.blocks.pop();
-      return null;
+      return;
     }
+
+    // if the second last block type matches
+    // we assume that the last block missed an end identifier
+    // and we can pop both block
+    if (
+      this.blocks.length >= 2 &&
+      this.blocks[this.blocks.length - 2].type === endBlockType
+    ) {
+      this.blocks.pop();
+      this.blocks.pop();
+    } else {
+      // otherwise we just assume the end identifier is unrelated
+      // and we can pop the last block
+      this.blocks.pop();
+    }
+    this.addIndentDiagnostics(
+      lastBlock.controlRange,
+      `Missing end identifier for block ${BlockType[lastBlock.type]}.`
+    );
   }
 
-  public clear() {
+  public clear(){
+    if (this.blocks.length <= 0) {
+      return null;
+    }
+    for (let i = 0; i < this.blocks.length; i++) {
+      const block = this.blocks[i];
+      this.addIndentDiagnostics(
+        block.controlRange,
+        `Missing end identifier for block ${BlockType[block.type]}.`
+      )
+    }
     this.blocks = [];
   }
 
-  // TODO: when function ends, clear the stack and return diagnostics
+  private addIndentDiagnostics(
+    range: vscode.Range,
+    message: string,
+  )
+  {
+    const diagnostic = new vscode.Diagnostic(range, message);
+    this.currentDiags.push(diagnostic);
+  }
 }
 
 export class EraBasicIndenter {
-  public error: IndenterError = {
-    hasError: false,
-    diagnostic: null,
-  };
-
   private nextState: IndentNumber = 0;
 
   private currentState: IndentNumber = 0;
 
   private blockStack: IndenterBlockCollection = new IndenterBlockCollection();
 
-  private currentIndent: number = 0;
+  private currentIndent = 0;
 
+  // TODO indent according to erabasic setting
   constructor(
     private readonly config: vscode.WorkspaceConfiguration,
     private options: vscode.FormattingOptions | null
   ) {}
 
-  public updateOptions(options: vscode.FormattingOptions) {
-    this.options = options;
-  }
-
-  public reset() {
-    this.blockStack.clear();
-    this.nextState = 0;
-    this.currentState = 0;
-    this.currentIndent = 0;
-    this.error.hasError = false;
-    this.error.diagnostic = null;
-  }
-
+  /**
+   * Resolves the given text line.
+   *
+   * @param {vscode.TextLine} textLine - The text line to resolve.
+   */
   public resolve(textLine: vscode.TextLine) {
     let text: string = textLine.text;
-    let diag = undefined;
 
     if (stmSkipStart.test(text)) {
       this.blockStack.push(BlockType.SKIP, textLine, stmSkipStart);
     } else if (stmSkipEnd.test(text)) {
-      diag = this.blockStack.pop(BlockType.SKIP, textLine, stmSkipEnd);
+      this.blockStack.pop(BlockType.SKIP, textLine, stmSkipEnd);
     }
 
     // connection syntax
@@ -216,7 +244,7 @@ export class EraBasicIndenter {
       this.blockStack.push(BlockType.CONNECT, textLine, stmConnect);
     } else if (stmEndConnect.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.CONNECT, textLine, stmEndConnect);
+      this.blockStack.pop(BlockType.CONNECT, textLine, stmEndConnect);
     }
 
     // SIF syntax only indent forward for 1 line
@@ -225,7 +253,7 @@ export class EraBasicIndenter {
       this.blockStack.checkStackTop(BlockType.SIF)
     ) {
       this.nextState = -1;
-      diag = this.blockStack.pop(BlockType.SIF, textLine, stmSIF);
+      this.blockStack.pop(BlockType.SIF, textLine);
       return;
     }
 
@@ -236,7 +264,7 @@ export class EraBasicIndenter {
       return; // do nothing
     }
 
-    let comment = stmComment.exec(text);
+    const comment = stmComment.exec(text);
 
     if (comment != null) {
       text = text.substring(0, comment.index);
@@ -250,7 +278,7 @@ export class EraBasicIndenter {
       this.nextState = 1;
     } else if (stmENDIF.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.IF, textLine, stmENDIF);
+      this.blockStack.pop(BlockType.IF, textLine, stmENDIF);
     } else if (stmSELECTCASE.test(text)) {
       this.nextState = 2;
       this.blockStack.push(BlockType.SELECTCASE, textLine, stmSELECTCASE);
@@ -259,25 +287,25 @@ export class EraBasicIndenter {
       this.nextState = 1;
     } else if (stmENDSELECT.test(text)) {
       this.currentState = -2;
-      diag = this.blockStack.pop(BlockType.SELECTCASE, textLine, stmENDSELECT);
+      this.blockStack.pop(BlockType.SELECTCASE, textLine, stmENDSELECT);
     } else if (stmFOR.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.FOR, textLine, stmFOR);
     } else if (stmNEXT.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.FOR, textLine, stmNEXT);
+      this.blockStack.pop(BlockType.FOR, textLine, stmNEXT);
     } else if (stmWHILE.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.WHILE, textLine, stmWHILE);
     } else if (stmWEND.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.WHILE, textLine, stmWEND);
+      this.blockStack.pop(BlockType.WHILE, textLine, stmWEND);
     } else if (stmDO.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.LOOP, textLine, stmDO);
     } else if (stmLOOP.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.LOOP, textLine, stmLOOP);
+      this.blockStack.pop(BlockType.LOOP, textLine, stmLOOP);
     } else if (stmREPEAT.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.REPEAT, textLine, stmREPEAT);
@@ -292,13 +320,13 @@ export class EraBasicIndenter {
       this.nextState = 1;
     } else if (stmENDCATCH.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.TRYC, textLine, stmENDCATCH);
+      this.blockStack.pop(BlockType.TRYC, textLine, stmENDCATCH);
     } else if (stmTRYLIST.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.TRYLIST, textLine, stmTRYLIST);
     } else if (stmENDFUNC.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.TRYLIST, textLine, stmENDFUNC);
+      this.blockStack.pop(BlockType.TRYLIST, textLine, stmENDFUNC);
     } else if (stmPRINTDATA.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.PRINTDATA, textLine, stmPRINTDATA);
@@ -307,23 +335,19 @@ export class EraBasicIndenter {
       this.blockStack.push(BlockType.DATALIST, textLine, stmDATALIST);
     } else if (stmENDLIST.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.DATALIST, textLine, stmENDLIST);
+      this.blockStack.pop(BlockType.DATALIST, textLine, stmENDLIST);
     } else if (stmENDDATA.test(text)) {
       this.currentState = -1;
-      diag = this.blockStack.pop(BlockType.PRINTDATA, textLine, stmENDDATA);
+      this.blockStack.pop(BlockType.PRINTDATA, textLine, stmENDDATA);
     } else if (stmSIF.test(text)) {
       this.nextState = 1;
       this.blockStack.push(BlockType.SIF, textLine, stmSIF);
     } else if (defFunction.test(text)) {
+      this.currentState = 0;
       if (this.config.get("functionIndent")) {
-        this.currentState = -1;
         this.nextState = 1;
       }
-    }
-
-    if (diag !== undefined) {
-      this.error.hasError = true;
-      this.error.diagnostic = diag;
+      this.blockStack.clear();
     }
   }
 
@@ -341,8 +365,14 @@ export class EraBasicIndenter {
     this.nextState = 0;
   }
 
+  /**
+   * Sets the indent of the given text.
+   *
+   * @param {string} text - The text to set the indent for.
+   * @return {string} The indented text.
+   */
   public setIndent(text: string): string {
-    let result = text.trimStart();
+    const result = text.trimStart();
 
     if (result.length === 0) {
       return result;
@@ -356,7 +386,7 @@ export class EraBasicIndenter {
     );
   }
 
-  public getBlocks(): IndenterBlockCollection {
+  public get blocks(): IndenterBlockCollection {
     return this.blockStack;
   }
 }

@@ -66,12 +66,6 @@ export function activate(context: ExtensionContext) {
       new EraBasicDocumentFormattingEditProvider(diagnostics)
     )
   );
-  // context.subscriptions.push(
-  //   vscode.languages.registerDocumentFormattingEditProvider(
-  //     selector,
-  //     new EraBasicDocumentFormattingEditProvider(diagnostics)
-  //   )
-  // );
   context.subscriptions.push(
     vscode.languages.registerHoverProvider(
       selector,
@@ -164,15 +158,13 @@ class EraBasicWorkspaceSymbolProvider implements WorkspaceSymbolProvider {
 }
 
 class EraBasicDocumentFormattingEditProvider
-  implements
-    vscode.DocumentFormattingEditProvider,
-    vscode.DocumentRangeFormattingEditProvider
+  implements vscode.DocumentRangeFormattingEditProvider
 {
-  private diagonostics: vscode.DiagnosticCollection;
+  private diagnostics: vscode.DiagnosticCollection;
   private config: vscode.WorkspaceConfiguration;
 
   constructor(diagnostics: vscode.DiagnosticCollection) {
-    this.diagonostics = diagnostics;
+    this.diagnostics = diagnostics;
     this.config = vscode.workspace.getConfiguration("erabasic");
   }
 
@@ -182,54 +174,51 @@ class EraBasicDocumentFormattingEditProvider
     options: vscode.FormattingOptions,
     token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.TextEdit[]> {
-    var indenter = new EraBasicIndenter(
-      this.config,
-      options
-    )
+    var indenter = new EraBasicIndenter(this.config, options);
     return this.indent(document, range, indenter);
   }
 
-  provideDocumentFormattingEdits(
-    document: vscode.TextDocument,
-    options: vscode.FormattingOptions,
-    token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.TextEdit[]> {
-    var indenter = new EraBasicIndenter(
-      this.config,
-      options
-    )
-    return this.indent(
-      document,
-      new vscode.Range(0, 0, document.lineCount, 0),
-      indenter
-    );
-  }
-
+  /**
+   * Formats the indentation of a given range in a text document.
+   *
+   * @param {vscode.TextDocument} document - The text document to format.
+   * @param {vscode.Range} range - The range to format.
+   * @param {EraBasicIndenter} indenter - The indenter object used for formatting.
+   * @return {vscode.TextEdit[]} An array of text edits representing the formatted indentation.
+   */
   private indent(
     document: vscode.TextDocument,
     range: vscode.Range,
     indenter: EraBasicIndenter
   ): vscode.TextEdit[] {
-    if (this.diagonostics.get(document.uri) !== undefined) {
-      // show a notification for you cannot format a document with errors here
+    if (this.diagnostics.has(document.uri)) {
       vscode.window.showErrorMessage("Cannot format a document with errors");
       return [];
     }
-    
-    const ret: vscode.TextEdit[] = [];
 
-    for (let line = range.start.line; line <= range.end.line; line++) {
+    const textEdits: vscode.TextEdit[] = [];
+
+    // Iterate the whole document
+    for (let line = 0; line < document.lineCount; line++) {
       indenter.updateNext();
 
       const textLine = document.lineAt(line);
       indenter.resolve(textLine);
 
       indenter.updateCurrent();
-      const result = indenter.setIndent(textLine.text);
 
-      ret.push(new vscode.TextEdit(textLine.range, result)); }
+      // only format the given range
+      if (line >= range.start.line && line <= range.end.line) {
+        const newIndent = indenter.setIndent(textLine.text);
 
-    return ret;
+        if (newIndent === textLine.text) continue;
+
+        const textEdit = new vscode.TextEdit(textLine.range, newIndent);
+        textEdits.push(textEdit);
+      }
+    }
+
+    return textEdits;
   }
 }
 
