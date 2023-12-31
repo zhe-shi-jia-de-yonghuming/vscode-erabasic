@@ -1,4 +1,6 @@
 {
     "configuration.completionWorkspaceSymbols.description": "ワークスペース内のシンボルを入力補完の対象に含めます。",
-    "configuration.completionWorkspaceByMultiProcess.description": "***実験的機能です。***\n\nワークスペース内の探索をマルチスレッドで実行します。\n環境によっては入力補完の候補表示などが高速化するかもしれませんが、不安定です。"
+    "configuration.completionWorkspaceByMultiProcess.description": "***実験的機能です。***\n\nワークスペース内の探索をマルチスレッドで実行します。\n環境によっては入力補完の候補表示などが高速化するかもしれませんが、不安定です。",
+    "configuration.functionIndent.description": "関数の本体には1つのインデントが含まれます。",
+    "configuration.commentIndent.description": "Automatically indent comments.(may cause different indents between the comments and lines the comment intended to be on.)"
 }

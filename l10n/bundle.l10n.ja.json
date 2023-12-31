@@ -1,0 +1,5 @@
+{
+    "Missing start identifier for block {0}": "コードブロック {0} には開始識別子がありません",
+    "Missing end identifier for block {0}": "コードブロック {0} には終了識別子がありません",
+    "Please fix all the errors before formatting.": "フォーマット前にすべてのエラーを修正してください。"
+}
