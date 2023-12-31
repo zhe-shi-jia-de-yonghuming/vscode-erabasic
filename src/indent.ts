@@ -136,8 +136,9 @@ class IndenterBlockCollection {
     regex: RegExp | null = null
   ): vscode.Diagnostic | null {
     // special case for SIF
-    if (regex === null) {
+    if (!regex) {
       this.blocks.pop();
+      return;
     }
 
     const result = regex.exec(textLine.text);
@@ -152,8 +153,11 @@ class IndenterBlockCollection {
     if (this.blocks.length <= 0) {
       this.addIndentDiagnostics(
         range,
-        `Unpaired start identifier for block ${BlockType[endBlockType]}.`
+        vscode.l10n.t("Missing start identifier for block {0}", {
+          0: BlockType[endBlockType],
+        })
       );
+      return;
     }
 
     const lastBlock = this.blocks[this.blocks.length - 1];
@@ -180,11 +184,13 @@ class IndenterBlockCollection {
     }
     this.addIndentDiagnostics(
       lastBlock.controlRange,
-      `Missing end identifier for block ${BlockType[lastBlock.type]}.`
+      vscode.l10n.t("Missing end identifier for block {0}", {
+        0: BlockType[lastBlock.type],
+      })
     );
   }
 
-  public clear(){
+  public clear() {
     if (this.blocks.length <= 0) {
       return null;
     }
@@ -192,17 +198,15 @@ class IndenterBlockCollection {
       const block = this.blocks[i];
       this.addIndentDiagnostics(
         block.controlRange,
-        `Missing end identifier for block ${BlockType[block.type]}.`
-      )
+        vscode.l10n.t("Missing end identifier for block {0}", {
+          0: BlockType[block.type],
+        })
+      );
     }
     this.blocks = [];
   }
 
-  private addIndentDiagnostics(
-    range: vscode.Range,
-    message: string,
-  )
-  {
+  private addIndentDiagnostics(range: vscode.Range, message: string) {
     const diagnostic = new vscode.Diagnostic(range, message);
     this.currentDiags.push(diagnostic);
   }
@@ -217,18 +221,16 @@ export class EraBasicIndenter {
 
   private currentIndent = 0;
 
-  // TODO indent according to erabasic setting
-  constructor(
-    private readonly config: vscode.WorkspaceConfiguration,
-    private options: vscode.FormattingOptions | null
-  ) {}
+  private extensionConfig = vscode.workspace.getConfiguration("erabasic");
+
+  constructor(private options: vscode.FormattingOptions | null) {}
 
   /**
    * Resolves the given text line.
    *
    * @param {vscode.TextLine} textLine - The text line to resolve.
    */
-  public resolve(textLine: vscode.TextLine) {
+  public resolve(textLine: vscode.TextLine): boolean {
     let text: string = textLine.text;
 
     if (stmSkipStart.test(text)) {
@@ -254,20 +256,26 @@ export class EraBasicIndenter {
     ) {
       this.nextState = -1;
       this.blockStack.pop(BlockType.SIF, textLine);
-      return;
+      return true;
     }
 
     if (
       this.blockStack.length > 0 &&
       this.blockStack.checkStackTop(BlockType.CONNECT)
     ) {
-      return; // do nothing
+      return true; // do nothing
     }
 
     const comment = stmComment.exec(text);
 
     if (comment != null) {
       text = text.substring(0, comment.index);
+      if (text.trim().length === 0)
+        if (this.extensionConfig.get("commentIndent")) {
+          return true;
+        } else {
+          return false;
+        }
     }
 
     if (stmIF.test(text)) {
@@ -343,12 +351,14 @@ export class EraBasicIndenter {
       this.nextState = 1;
       this.blockStack.push(BlockType.SIF, textLine, stmSIF);
     } else if (defFunction.test(text)) {
-      this.currentState = 0;
-      if (this.config.get("functionIndent")) {
+      this.currentIndent = 0;
+      if (this.extensionConfig.get("functionIndent")) {
         this.nextState = 1;
       }
       this.blockStack.clear();
     }
+
+    return true;
   }
 
   public updateCurrent() {

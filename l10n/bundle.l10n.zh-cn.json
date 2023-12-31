@@ -1,0 +1,5 @@
+{
+    "Missing start identifier for block {0}": "代码块 {0} 缺少起始标识符",
+    "Missing end identifier for block {0}": "代码块 {0} 缺少结束标识符",
+    "Please fix all the errors before formatting.": "格式化前请修正所有错误。"
+}

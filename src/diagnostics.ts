@@ -14,22 +14,19 @@ export function refreshDiagnostics(
   doc: vscode.TextDocument,
   blockDiagnostics: vscode.DiagnosticCollection
 ): void {
-  const indenter = new EraBasicIndenter(
-    vscode.workspace.getConfiguration("erabasic"),
-    null
-  );
-  const diagnostics: vscode.Diagnostic[] = [];
+  const indenter = new EraBasicIndenter(null);
+  let diagnostics: vscode.Diagnostic[] = [];
 
   for (let lineIndex = 0; lineIndex < doc.lineCount; lineIndex++) {
     const lineOfText = doc.lineAt(lineIndex);
     indenter.resolve(lineOfText);
   }
-  
+
   indenter.blocks.clear();
-  if (diagnostics.length > 0) {
-    diagnostics.concat(indenter.blocks.error);
+  if (indenter.blocks.error.length > 0) {
+    diagnostics.push(...indenter.blocks.error);
   }
-  
+
   blockDiagnostics.set(doc.uri, diagnostics);
 }
 

@@ -161,11 +161,9 @@ class EraBasicDocumentFormattingEditProvider
   implements vscode.DocumentRangeFormattingEditProvider
 {
   private diagnostics: vscode.DiagnosticCollection;
-  private config: vscode.WorkspaceConfiguration;
 
   constructor(diagnostics: vscode.DiagnosticCollection) {
     this.diagnostics = diagnostics;
-    this.config = vscode.workspace.getConfiguration("erabasic");
   }
 
   provideDocumentRangeFormattingEdits(
@@ -174,7 +172,7 @@ class EraBasicDocumentFormattingEditProvider
     options: vscode.FormattingOptions,
     token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.TextEdit[]> {
-    var indenter = new EraBasicIndenter(this.config, options);
+    var indenter = new EraBasicIndenter(options);
     return this.indent(document, range, indenter);
   }
 
@@ -191,8 +189,10 @@ class EraBasicDocumentFormattingEditProvider
     range: vscode.Range,
     indenter: EraBasicIndenter
   ): vscode.TextEdit[] {
-    if (this.diagnostics.has(document.uri)) {
-      vscode.window.showErrorMessage("Cannot format a document with errors");
+    if (this.diagnostics.get(document.uri).length > 0) {
+      vscode.window.showErrorMessage(
+        vscode.l10n.t("Please fix all the errors before formatting.")
+      );
       return [];
     }
 
@@ -203,12 +203,12 @@ class EraBasicDocumentFormattingEditProvider
       indenter.updateNext();
 
       const textLine = document.lineAt(line);
-      indenter.resolve(textLine);
+      let willIndent = indenter.resolve(textLine);
 
       indenter.updateCurrent();
 
       // only format the given range
-      if (line >= range.start.line && line <= range.end.line) {
+      if (willIndent && line >= range.start.line && line <= range.end.line) {
         const newIndent = indenter.setIndent(textLine.text);
 
         if (newIndent === textLine.text) continue;
