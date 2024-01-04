@@ -411,5 +411,7 @@
 	"completion.build-in.BINPUTS": "実行時点でボタン化されている値のみを受け付けるINPUTS。キーボード入力された値もボタンと一致すれば受け付ける",
 	"completion.build-in.GDRAWLINE": "指定したgIDに、指定した座標fromから指定した座標forに直線を描写する。直線の色と幅はGSETPENで指定した値を使用する",
 	"completion.build-in.GETDISPLAYLINE": "指定した行の文字列を取得する。HTML_PRINT行はタグ付きで取得する",
-	"completion.build-in.GDASHSTYLE": "GDRAWLINEで使用する線のスタイルを変更する"
+	"completion.build-in.GDASHSTYLE": "GDRAWLINEで使用する線のスタイルを変更する",
+	"completion.build-in.GETDOINGFUNCTION": "現在実行中の関数名を取得する",
+	"completion.build-in.TOOLTIP_IMG": "引数が非0でツールチップ画像表示機能がオンになる"
 }
