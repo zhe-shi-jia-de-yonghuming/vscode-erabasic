@@ -233,11 +233,13 @@ export class EraBasicIndenter {
   public resolve(textLine: vscode.TextLine): boolean {
     let text: string = textLine.text;
 
+	/*
     if (stmSkipStart.test(text)) {
       this.blockStack.push(BlockType.SKIP, textLine, stmSkipStart);
     } else if (stmSkipEnd.test(text)) {
       this.blockStack.pop(BlockType.SKIP, textLine, stmSkipEnd);
     }
+	*/
 
     // connection syntax
     // indent not needed
