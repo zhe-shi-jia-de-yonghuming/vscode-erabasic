@@ -6,7 +6,6 @@ import { BlockType, EraBasicIndenter } from "./indent";
 
 /**
  * Analyzes the text document for problems.
- * This demo diagnostic problem provider finds all mentions of 'emoji'.
  * @param doc text document to analyze
  * @param blockDiagnostics diagnostic collection
  */
@@ -36,9 +35,6 @@ export function subscribeToDocumentChanges(
   context: vscode.ExtensionContext,
   diagbostics: vscode.DiagnosticCollection
 ): void {
-  if (vscode.window.activeTextEditor) {
-    refreshDiagnostics(vscode.window.activeTextEditor.document, diagbostics);
-  }
   context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor((editor) => {
       if (editor) {
