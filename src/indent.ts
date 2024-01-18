@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { EraBasicOption } from "./extension";
 
 type IndentNumber = -2 | -1 | 0 | 1 | 2;
 
@@ -231,6 +232,9 @@ export class EraBasicIndenter {
    * @param {vscode.TextLine} textLine - The text line to resolve.
    */
   public resolve(textLine: vscode.TextLine): boolean {
+	const extensionOption = new EraBasicOption;
+	if (!extensionOption.codeBlock)
+		return false;
     let text: string = textLine.text;
 
 	/*

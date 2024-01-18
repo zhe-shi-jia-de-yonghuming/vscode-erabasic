@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to the "erabasic-EM+EE" extension will be documented in this file.
 
+## [0.8.2] - 2024-01-18
+- Now togglable code block.(Code Block is having some problem. Please wait until fixed.)
+
+## [0.8.1] - 2024-01-04
+- Fix SKIPSTART's block error
+
 ## [0.8.0] - 2024-01-04
 - Merged [CK Rainbow's commits](https://github.com/CatQOh/vscode-erabasic/pull/6)
 - Added new instructions references

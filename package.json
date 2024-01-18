@@ -3,7 +3,7 @@
   "displayName": "EraBasic-EM+EE",
   "description": "Language Support for EraBasic and EM+EE",
   "license": "MIT",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "publisher": "deletedenter",
   "bugs": {
     "url": "https://discord.gg/p5rb5uK"
@@ -80,6 +80,11 @@
             "default": false,
             "type": "boolean",
             "description": "%configuration.commentIndent.description%"
+          },
+          "erabasic.codeBlock": {
+            "default": false,
+            "type": "boolean",
+            "description": "%configuration.codeBlock.description%"
           }
         }
       }

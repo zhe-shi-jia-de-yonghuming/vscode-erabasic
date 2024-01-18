@@ -238,4 +238,10 @@ export class EraBasicOption {
       .getConfiguration("erabasic")
       .get("functionIndent", false);
   }
+
+  public get codeBlock(): boolean {
+    return vscode.workspace
+      .getConfiguration("erabasic")
+      .get("codeBlock", false);
+  }
 }
