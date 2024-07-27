@@ -272,7 +272,7 @@
     "completion.build-in.HTML_TAGSPLIT": "html同等の文字列と解釈してタグごとにSPLITする",
     "completion.build-in.CLEARTEXTBOX": "ゲームプレイ時の最下部の入力欄を消去する",
     "completion.build-in.STOPCALLTRAIN": "実行中のCALLTRAIN処理を終了する",
-    "completion.build-in.TIMES": "少数第二位まで記述可能な乗算処理",
+    "completion.build-in.TIMES": "小数第二位まで記述可能な乗算処理",
     "completion.build-in.BAR": "指定した数値で指定した長さのグラフを表示",
     "completion.build-in.BARL": "BAR+改行",
     "completion.build-in.PUTFORM": "SAVEINFO関数内で使用可能 セーブデータにコメントを付ける",
