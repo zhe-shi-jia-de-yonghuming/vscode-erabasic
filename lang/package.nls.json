@@ -398,7 +398,7 @@
 	"completion.build-in.RESUMETEXTBOX": "MOVETEXTBOXの設定を解除する",
 	"completion.build-in.GGETPEN": "指定したgIDの、GSETPENで指定した色の値を返す(cARGB)",
 	"completion.build-in.GGETPENWIDTH": "指定したgIDの、GSETPENで指定した幅(width)を返す",
-	"completion.build-in.GGETBRUSH": "指定したgIDの、GSETBRUSHで指定した色の値を開けス(cARGB)",
+	"completion.build-in.GGETBRUSH": "指定したgIDの、GSETBRUSHで指定した色の値を返す(cARGB)",
 	"completion.build-in.TOOLTIP_CUSTOM": "ツールチップ拡張機能の有効/無効を切り替える",
 	"completion.build-in.TOOLTIP_SETFONT": "ツールチップ拡張機能で使用するフォント名を指定する",
 	"completion.build-in.TOOLTIP_SETFONTSIZE": "ツールチップ拡張機能で使用するフォントサイズを指定する",
@@ -413,5 +413,18 @@
 	"completion.build-in.GETDISPLAYLINE": "指定した行の文字列を取得する。HTML_PRINT行はタグ付きで取得する",
 	"completion.build-in.GDASHSTYLE": "GDRAWLINEで使用する線のスタイルを変更する",
 	"completion.build-in.GETDOINGFUNCTION": "現在実行中の関数名を取得する",
-	"completion.build-in.TOOLTIP_IMG": "引数が非0でツールチップ画像表示機能がオンになる"
+	"completion.build-in.TOOLTIP_IMG": "引数が非0でツールチップ画像表示機能がオンになる",
+	"completion.build-in.BITMAP_CACHE_ENABLE": "引数が非0で以降のテキストをビットマップ画像として描写する",
+	"completion.build-in.SETBGIMAGE": "背景画像を設定する",
+	"completion.build-in.REMOVEBGIMAGE": "指定した背景画像を削除する",
+	"completion.build-in.CLEARBGIMAGE": "全ての背景画像を削除する",
+	"completion.build-in.PRINTN": "改行しないPRINTW",
+	"completion.build-in.PRINTVN": "改行しないPRINTVW",
+	"completion.build-in.PRINTSN": "改行しないPRINTSW",
+	"completion.build-in.PRINTFORMN": "改行しないPRINTFORMW",
+	"completion.build-in.PRINTFORMSN": "改行しないPRINTFORMSW",
+	"completion.build-in.VARI": "ERB内で数値型ローカル変数を宣言できる",
+	"completion.build-in.VARS": "ERB内で文字列型ローカル変数を宣言できる",
+	"completion.build-in.HTML_PRINT_ISLAND": "スクロールに影響しない独立したHTML_PRINT",
+	"completion.build-in.HTML_PRINT_ISLAND_CLEAR": "HTML_PRINT_ISLANDの描画を削除する"
 }

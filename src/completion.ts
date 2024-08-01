@@ -2905,7 +2905,75 @@ export const GetBuiltinComplationItems = () => {
 		{
 			label: "GDRAWLINE",
 			kind: Function,
-		}
+		},
+		{
+			label: "GETDISPLAYLINE",
+			kind: Function,
+		},
+		{
+			label: "GDASHSTYLE",
+			kind: Function,
+		},
+		{
+			label: "GETDOINGFUNCTION",
+			kind: Function,
+		},
+		{
+			label: "TOOLTIP_IMG",
+			kind: Command,
+		},
+		{
+			label: "BITMAP_CACHE_ENABLE",
+			kind: Command,
+		},
+		{
+			label: "SETBGIMAGE",
+			kind: Command,
+		},
+		{
+			label: "REMOVEBGIMAGE",
+			kind: Command,
+		},
+		{
+			label: "CLEARBGIMAGE",
+			kind: Command,
+		},
+		{
+			label: "PRINTN",
+			kind: Command,
+		},
+		{
+			label: "PRINTVN",
+			kind: Command,
+		},
+		{
+			label: "PRINTSN",
+			kind: Command,
+		},
+		{
+			label: "PRINTFORMN",
+			kind: Command,
+		},
+		{
+			label: "PRINTFORMSN",
+			kind: Command,
+		},
+		{
+			label: "VARI",
+			kind: Command,
+		},
+		{
+			label: "VARS",
+			kind: Command,
+		},
+		{
+			label: "HTML_PRINT_ISLAND",
+			kind: Command,
+		},
+		{
+			label: "HTML_PRINT_ISLAND_CLEAR",
+			kind: Command,
+		},
 		/**
 		{
 			label: "",

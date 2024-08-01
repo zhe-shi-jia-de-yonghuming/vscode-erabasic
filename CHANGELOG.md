@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the "erabasic-EM+EE" extension will be documented in this file.
 
+## [0.9.0] - 2024-08-01
+- Compatible with latest version
+
 ## [0.8.2] - 2024-01-18
 - Now togglable code block.(Code Block is having some problem. Please wait until fixed.)
 
