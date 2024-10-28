@@ -1,0 +1,2616 @@
+; Note: These declarations are pseudo-EraBasic for illustrative purposes.
+; 注意：这些声明是伪EraBasic，仅用于说明目的。
+
+;;; 确定当前拥有的角色中是否有这个角色
+;;; - int CHARA_NO 要查找的角色编号
+;;; - @RESULT:0 角色编号,没有则返回-1
+@GETCHARA(CHARA_NO)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+; ...
+RETURN INDEX
+
+;;; 查找角色变量为指定值的角色编号
+;;; - CHARA_VAR 角色变量（如CFLAG:10）
+;;; - int VALUE 整型值
+;;; - int START 开始搜索的位置
+;;; - int END 结束搜索的位置
+;;; - @RESULT:0 第一个找到的角色编号
+@FINDCHARA(CHARA_VAR, VALUE, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_VAR  ; or #DIMS REF CHARA_VAR
+#DIM VALUE          ; or #DIMS VALUE
+#DIM START
+#DIM END
+#DIM INDEX
+; ...
+RETURN INDEX
+
+;;; 倒序查找角色变量为指定值的角色编号
+;;; - CHARA_VAR 角色变量（如CFLAG:10）
+;;; - int VALUE 整型值
+;;; - int START 开始搜索的位置
+;;; - int END 结束搜索的位置
+;;; - @RESULT:0 第一个找到的角色编号
+@FINDLASTCHARA(CHARA_VAR, VALUE, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_VAR  ; or #DIMS REF CHARA_VAR
+#DIM VALUE          ; or #DIMS VALUE
+#DIM START
+#DIM END
+#DIM INDEX
+; ...
+RETURN INDEX
+
+;;; 调用CSV中定义的NAME(名称)
+;;; - int CHARA_NO 角色编号
+;;; - @RESULTS:0 字符串结果
+@CSVNAME(CHARA_NO)
+; BUILTIN FUNCTIONS
+#DIM CHARA_NO
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+;;; 调用CSV中定义的CALLNAME(称呼)
+;;; - int CHARA_NO 角色编号
+;;; - @RESULTS:0 字符串结果
+@CSVCALLNAME(CHARA_NO)
+; BUILTIN FUNCTIONS
+#DIM CHARA_NO
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+;;; 调用CSV中定义的NICKNAME(昵称)
+;;; - int CHARA_NO 角色编号
+;;; - @RESULTS:0 字符串结果
+@CSVNICKNAME(CHARA_NO)
+; BUILTIN FUNCTIONS
+#DIM CHARA_NO
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+;;; 调用CSV中定义的MASTERNAME
+;;; - int CHARA_NO 角色编号
+;;; - @RESULTS:0 字符串结果
+@CSVMASTERNAME(CHARA_NO)
+; BUILTIN FUNCTIONS
+#DIM CHARA_NO
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中CSTR
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVCSTR(CHARA_NO, INDEX)
+; BUILTIN FUNCTIONS
+#DIM CHARA_NO
+#DIM INDEX
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中BASE(基础)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVBASE(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中ABL(能力)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVABL(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中TALENT(素质)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVTALENT(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中MARK(刻印)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVMARK(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中EXP(经验)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVEXP(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中定义的值的函数
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVRELATION(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中JUEL(珠)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVJUEL(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中EQUIP(着装物)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVEQUIP(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 读取CSV中CFLAG(flag)
+;;; - int CHARA_NO 角色编号
+;;; - int INDEX 变量的索引
+;;; - @RESULTS:0 字符串结果
+@CSVCFLAG(CHARA_NO, INDEX)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM INDEX
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 检查对应的角色是否在CSV中被定义
+;;; - int CHARA_NO 角色编号
+;;; - @RESULT:0 被定义则返回1,没有则返回0。
+@EXISTCSV(CHARA_NO)
+; BUILTIN FUNCTION
+#DIM CHARA_NO
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 得到CSV中对定义的名称的索引
+;;; 如GETNUM(EXP,"採集経験")，返回其EXP中"採集経験"的索引
+;;; - int CSV_VAR CSV名
+;;; - str LABEL 名称
+;;; - @RESULT:0 索引
+@GETNUM(CSV_VAR, LABEL)
+; BUILTIN FUNCTION
+#DIM REF CSV_VAR  ; or #DIMS REF CSV_VAR
+#DIMS LABEL
+#DIM INDEX
+; ...
+RETURN INDEX
+
+;;; 测量字符串的长度(长度是按半角字符计算的,全角字符会被算作2个)
+;;; - str TEXT 字符串表达式
+;;; - @RESULT:0 字符串的长度
+@STRLENS(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIM LEN
+; ...
+RETURN LEN
+
+;;; 测量字符串的长度(半角字符,全角字符都算一个)
+;;; - str TEXT 字符串表达式
+;;; - @RESULT:0 字符串的长度
+@STRLENSU(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIM LEN
+; ...
+RETURN LEN
+
+;;; 返回字符串的指定部位。字符串的第一个字符位置为0。
+;;; - 如果起始位置大于原字符串的长度,空字符串""将被返回。
+;;; - 字符数由半角字符来确定,全角字符算2个。
+;;; - 如果你将结束位置传入一个负值,或者比字符串长度更大的数,返回值将是整个字符串
+;;; - 如果你指定的起始位置不能切片(指你指定的起始位置的是全角字符的中间位置),就会认为后面一个字符为起始位置
+;;; 。请注意,因此会出现比你预期的结果多一个字符的情况
+;;; - str TEXT 字符串表达式
+;;; - int START 开始位置
+;;; - int LEN 长度
+;;; - @RESULTS:0 字符串的子串
+@SUBSTRING(TEXT, START = 0, LEN = -1)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIM START
+#DIM LEN
+#DIMS SUB
+; ...
+RETURN SUB
+
+;;; 返回字符串的指定部位。字符串的第一个字符位置为0。
+;;; - 如果起始位置大于原字符串的长度,空字符串""将被返回。
+;;; - 字符数由半角字符，全角字符都算1个。
+;;; - 如果你将结束位置传入一个负值,或者比字符串长度更大的数,返回值将是整个字符串
+;;; - str TEXT 字符串表达式
+;;; - int START 开始位置
+;;; - int LEN 长度
+;;; - @RESULTS 字符串的子串
+@SUBSTRINGU(TEXT, START = 0, LEN = -1)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIM START
+#DIM LEN
+#DIMS SUB
+; ...
+RETURN SUB
+
+;;; 式中函数内获取字符串中指定位置的字符
+;;; - 全角字符占一个
+;;; - str TEXT 字符串
+;;; - int POS 位置
+;;; - @RESULTS:0 字符
+@CHARATU(TEXT, POS = 0)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIM POS
+#DIMS CHAR
+; ...
+RETURN CHAR
+
+;;; 检索字符串
+;;; - 全角字符占2个索引
+;;; - str TEXT 被检索的字符串
+;;; - str SUB 要检索的字符串
+;;; - START 起始位置
+;;; - @RESULT:0 位置(没找到返回-1)
+@STRFIND(TEXT, SUB, START = 0)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS SUB
+#DIM POS
+; ...
+RETURN POS
+
+;;; 检索字符串
+;;; - 半角全角字符都占1个索引
+;;; - TEXT 被检索的字符串
+;;; - SUB 要检索的字符串
+;;; - START 起始位置
+;;; - @RESULT:0 位置(没找到返回-1)
+@STRFINDU(TEXT, SUB, START = 0)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS SUB
+#DIM POS
+; ...
+RETURN POS
+
+;;; 获取该字符串中含多少个要检索的字符串的命令
+;;; - str TEXT 被检索的字符串
+;;; - str WORD 要检索的字符串
+;;; - @RESULT 数量
+@STRCOUNT(TEXT, WORD)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS WORD  ; regexp
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 得到自变量值对应的unicode的字符
+;;; - 白色心形符号为0x2661
+;;; - @RESULT:0 CODEPOINT
+@UNICODE(CODEPOINT)
+; BUILTIN FUNCTIONS
+#DIM CODEPOINT
+#DIMS CHAR
+; ...
+RETURN CHAR
+
+;;; 将字符串位置上的字符转化为Uncode编码值并返回
+;;; - str TEXT 格式化字符串表达式
+;;; - int POS 目标字符位置
+;;; - @RESULT unicode编码
+@ENCODETOUNI(TEXT, POS = 0)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIM POS
+#DIM CODEPOINT
+; ...
+RETURN CODEPOINT
+
+;;; 通过C#正则表达式将字符串替换
+;;; - ()、[]、$、/.*+等正则表达式中使用的符号必须要转义的
+;;; - str TEXT 替换对象 
+;;; - str OLD 要替换内容
+;;; - str NEW 替换内容
+;;; - @RESULTS:0 替换后的字符串
+@REPLACE(TEXT, OLD, NEW)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIMS OLD  ; regexp
+#DIMS NEW
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 式中函数中，将字符串转义用于正则表达式
+;;; - str TEXT 需要转义的字符串
+;;; - @RESULTS:0 转义后的字符串
+@ESCAPE(TEXT)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 返回指定变量或数组的尺寸
+;;; - 多维数组变量的情况,将各个维度的尺寸依次返回RESULT:0, RESULT:1, RESULT:2
+;;; - str VARNAME 变量名
+;;; - int DIMENSION 维度(从0开始)
+;;; - @RESULT:0 维度的大小
+@VARSIZE(VARNAME, DIMENSION = 0)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIM DIMENSION
+#DIM SIZE
+; ...
+RETURN SIZE
+
+;;; 得到电脑当前时刻
+;;; - 如2009年3月28日13时5分23秒678毫秒
+;;; - @RESULT:0 为20090328130523678
+;;; - @RESULTS:0 "2009年03月28日13:05:23"
+@GETTIME()
+; BUILTIN FUNCTION
+#DIM DATETIME
+; ...
+RETURN DATETIME
+
+
+;怪事
+@GETTIMES()
+; BUILTIN FUNCTIONS
+#DIMS DATETIME
+; ...
+RETURN DATETIME
+
+;;; 得到程序毫秒运行时间
+;;; - 0001年1月1日开始的时间以毫秒为单位计时,结果返回到RESULT:0
+;;; - 可以直接进行加减运算，适合调查耗时
+@GETMILLISECOND()
+; BUILTIN FUNCTION
+#DIM ELAPSED
+; ...
+RETURN ELAPSED
+
+;;; 得到程序秒运行时间
+;;; - 0001年1月1日开始的时间以秒为单位计时,结果返回到RESULT:0
+;;; - 可以直接进行加减运算，适合调查耗时
+@GETSECOND()
+; BUILTIN FUNCTION
+#DIM ELAPSED
+; ...
+RETURN ELAPSED
+
+;;; 检查是否安装了指定名称的字体
+;;; - FONTNAME:字体名称
+;;; - @RESULT:0 0表示未安装，1表示已安装
+@CHKFONT(FONTNAME)
+; BUILTIN FUNCTION
+#DIMS FONTNAME
+#DIM EXISTS
+; ...
+RETURN EXISTS
+
+;;; 平方运算
+;;; - BASE_:底数
+;;; - EXP_:指数
+;;; - @RESULT:0 计算结果
+@POWER(BASE_, EXP_)
+; BUILTIN FUNCTION
+#DIM BASE_
+#DIM EXP_
+#DIM RET
+; ...
+RETURN RET
+
+;;; 随机数生成
+;;; - MIN_:最小值(默认为0)
+;;; - MAX_:最大值
+;;; - @RESULT:0 随机数
+@RAND(MIN_ = 0, MAX_)
+; BUILTIN FUNCTION
+#DIM MIN_
+#DIM MAX_
+#DIM RET
+; ...
+RETURN RET
+
+;;; 将参数的绝对值返回到RESULT:0中
+;;; - NUM:待处理参数
+;;; - @RESULT:0 绝对值
+@ABS(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 将参数的正负返回到RESULT:0中
+;;; - NUM:待处理参数
+;;; - @RESULT:0 (小于1返回-1，正值返回1,0返回0)
+@SIGN(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 将参数中的最大值返回到RESULT:0
+;;; - NUM1
+;;; - NUM2
+;;; - NUM3...
+;;; - @RESULT:0 (最大值)
+@MAX(NUM1, NUM2, ...)
+; BUILTIN FUNCTION
+#DIM NUM1
+#DIM NUM2
+#DIM RET
+; ...
+RETURN RET
+
+;;; 将参数中的最小值返回到RESULT:0
+;;; - int NUM1
+;;; - int NUM2
+;;; - int NUM3...
+;;; - @RESULT:0 (最小值)
+@MIN(NUM1, NUM2, ...)
+; BUILTIN FUNCTION
+#DIM NUM1
+#DIM NUM2
+#DIM RET
+; ...
+RETURN RET
+
+;;; 限制NUM的值，使其在MIN_和MAX_之间
+;;; - int NUM 参数
+;;; - int MIN_ 最小
+;;; - int MAX_ 最大
+;;; - @RESULT:0 (小于MIN_则返回MIN_，大于MAX_则返回MAX_，限度内返回NUM)
+@LIMIT(NUM, MIN_, MAX_)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM MIN_
+#DIM MAX_
+#DIM RET
+; ...
+RETURN RET
+
+;;; 判断NUM是否在范围内
+;;; - int NUM 参数
+;;; - int MIN_ 最小
+;;; - int MAX_ 最大
+;;; @RESULT:0 (范围内返回1，否则返回0)
+@INRANGE(NUM, MIN_, MAX_)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM MIN_
+#DIM MAX_
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 开平方根
+;;; - int NUM 参数
+;;; - RESULT:0 
+@SQRT(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 获得数字 NUM 的第 BIT 位的值
+;;; - int NUM 操作数
+;;; - int BIT 操作的比特位
+;;; - ...
+;;; - @RESULT:0 (新值)
+@GETBIT(NUM, BIT)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM BIT
+#DIM RET
+; ...
+RETURN RET
+
+;;; 设置数字 NUM 的第 BIT 位的值为1
+;;; - int NUM 操作数
+;;; - int BIT1 操作的比特位
+;;; - int BIT2 操作的比特位
+;;; - ...
+;;; - @RESULT:0 (新值)
+@SETBIT(NUM, BIT1, BIT2)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM BIT1
+#DIM BIT2
+; ...
+RETURN RET
+
+;;; 设置数字 NUM 的第 BIT 位的值为0
+;;; - int NUM 操作数
+;;; - int BIT1 操作的比特位
+;;; - int BIT2 操作的比特位
+;;; - ...
+;;; - @RESULT:0 (新值)
+@CLEARBIT(NUM, BIT1, BIT2)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM BIT1
+#DIM BIT2
+; ...
+RETURN RET
+
+;;; 设置数字 NUM 的第 BIT 位的值进行反转
+;;; - int NUM 操作数
+;;; - int BIT1 操作的比特位
+;;; - int BIT2 操作的比特位
+;;; - ...
+;;; - @RESULT:0 (新值)
+@INVERTBIT(NUM, BIT1, BIT2)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM BIT1
+#DIM BIT2
+; ...
+RETURN RET
+
+;;; 立方根
+;;; - int NUM 参数
+;;; - @RESULT:0
+@CBRT(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 得到数字 NUM 的自然对数
+;;; - int NUM 参数
+;;; - @RESULT:0 
+@LOG(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 获取数字 NUM 的对数 (以 10 为底)
+;;; - int NUM 参数
+;;; - @RESULT:0 (对数)
+@LOG10(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 指数函数
+;;; int NUM 参数
+@EXPONENT(NUM)
+; BUILTIN FUNCTION
+#DIM NUM
+#DIM RET
+; ...
+RETURN RET
+
+;;; 得到将当前字体的名称
+;;; - @RESULTS:0 (字体名称)
+@GETFONT()
+; BUILTIN FUNCTIONS
+#DIMS FONTNAME
+; ...
+RETURN FONTNAME
+
+;;; 得到将当前的文字颜色(返回值是16进制的0xRRGGBB)
+;;; - @RESULT:0 (RGB颜色)
+@GETCOLOR()
+; BUILTIN FUNCTION
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 得到标识中指定的文字颜色
+;;; - @RESULT:0 (RGB颜色)
+@GETDEFCOLOR()
+; BUILTIN FUNCTION
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 得到背景颜色
+;;; - @RESULT:0 (RGB颜色)
+@GETBGCOLOR()
+; BUILTIN FUNCTION
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 得到标识中的背景颜色
+;;; - @RESULT:0 (RGB颜色)
+@GETDEFBGCOLOR()
+; BUILTIN FUNCTION
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 得到选项按钮的颜色代码
+;;; - @RESULT:0 (RGB颜色)
+@GETFOCUSCOLOR()
+; BUILTIN FUNCTION
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 得到当前字体的样式(粗体，斜体)
+;;; - @RESULT:0 (没有特殊样式则返回0)
+@GETSTYLE()
+; BUILTIN FUNCTION
+#DIM FONTSTYLE
+; ...
+RETURN FONTSTYLE
+
+;;; 获得当前的文字显示位置(对RESULTS:0赋值)
+@CURRENTALIGN()
+; BUILTIN FUNCTIONS
+#DIMS ALIGN
+; ...
+RETURN ALIGN
+
+;;; 得到当前的REDRAW(绘图控制命令)状态
+;;; - @RESULT:0
+@CURRENTREDRAW()
+; BUILTIN FUNCTION
+#DIM ACTIVE
+; ...
+RETURN ACTIVE
+
+;;; 将整数转换成字符串的命令
+;;; - NUM 待转换的整数
+;;; - FORMAT 转换的格式(和C#中的ToString一样)
+;;; - @RESULTS:0 转换后的字符串
+@TOSTR(NUM, FORMAT = "")
+; BUILTIN FUNCTIONS
+#DIM NUM
+#DIMS FORMAT
+#DIMS TEXT
+; ...
+RETURN TEXT
+
+;;; 得到不超过MAX_LV等级的当前的状态的等级
+;;; - int VALUE:当前值
+;;; - int MAX_LV:最大等级
+;;; - @RESULT:0 等级
+@GETPALAMLV(VALUE, MAX_LV)
+; BUILTIN FUNCTION
+#DIM VALUE
+#DIM MAX_LV
+#DIM CUR_LV
+; ...
+
+RETURN CUR_LV
+;;; 得到不超过MAX_LV等级的当前经验的等级
+;;; - int VALUE:当前值
+;;; - int MAX_LV:最大等级
+;;; - int @RESULT:0 等级
+@GETEXPLV(VALUE, MAX_LV)
+; BUILTIN FUNCTION
+#DIM VALUE
+#DIM MAX_LV
+#DIM CUR_LV
+; ...
+RETURN CUR_LV
+
+;;; 将字符串变全大写字母
+;;; - str TEXT 待转换的字符串
+;;; - str @RESULTS:0 转换后的字符串
+@TOUPPER(TEXT)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 将字符串变全小写字母
+;;; - str TEXT 待转换的字符串
+;;; - str @RESULTS:0 转换后的字符串
+@TOLOWER(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 将字符串中全角字符变半角字符
+;;; - str TEXT 待转换的字符串
+;;; - str @RESULTS:0 转换后的字符串
+@TOHALF(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 将字符串中半角字符变全全角字符
+;;; - str TEXT 待转换的字符串
+;;; - str @RESULTS:0 转换后的字符串
+@TOFULL(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 得到数组中元素的和
+;;; - ARRAY 数组
+;;; - int START 起始位置
+;;; - int END 结束位置
+;;; - int @RESULT:0 数组中所有元素的和
+@SUMARRAY(ARRAY, START = 0, END = *)
+; BUILTIN FUNCTION
+#DIM REF ARRAY
+#DIM START
+#DIM END
+#DIM RET
+; ...
+RETURN RET
+
+@MATCH(ARRAY, VALUE, START = 0, END = *)
+; BUILTIN FUNCTION
+#DIM REF ARRAY  ; or #DIMS REF ARRAY
+#DIM VALUE      ; or #DIMS VALUE
+#DIM START
+#DIM END
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 得到数组中的最大值
+;;; - ARRAY 数组
+;;; - START 起始位置
+;;; - END 结束位置
+@MAXARRAY(ARRAY, START = 0, END = *)
+; BUILTIN FUNCTION
+#DIM REF ARRAY
+#DIM START
+#DIM END
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 得到数组中的最小值
+;;; - ARRAY 数组
+;;; - START 起始位置
+;;; - END 结束位置
+@MINARRAY(ARRAY, START = 0, END = *)
+; BUILTIN FUNCTION
+#DIM REF ARRAY
+#DIM START
+#DIM END
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 得到二维数组中元素值的和
+;;; - 例如“RESULT = SUMCARRAY（CFLAG:2, A, B）”，相当
+;;; 于得到CLAG:(A~B):2的和
+;;; - CHARA_ARR 数组名
+;;; - START 起始位置(默认为0)
+;;; - END 结束位置(默认为CHARANUM)
+;;; - @RESULT:0 数组中所有元素的和
+@SUMCARRAY(CHARA_ARR, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_ARR
+#DIM START
+#DIM END
+#DIM RET
+; ...
+RETURN RET
+
+;;; 得到二维数组中VALUE值的个数
+;;; - 例如“CMATCH(TALENT:恋慕, 1)”，相当
+;;; 于得到“CLAG:(1~CHARANUM):恋慕”的个数
+;;; - CHARA_ARR 数组名
+;;; - START 起始位置(默认为0)
+;;; - END 结束位置(默认为CHARANUM)
+;;; - @RESULT:0 数组中所有元素的和
+@CMATCH(CHARA_ARR, VALUE, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_ARR  ; or #DIMS REF CHARA_ARR
+#DIM VALUE          ; or #DIMS VALUE
+#DIM START
+#DIM END
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 得到二维数组中的最大值
+;;; - 例如“MAXCARRAY(CFLAG:LOCAL:累计射精，1, CHARANUM)”，相当
+;;; 于得到“CLAG:(1~CHARANUM):累计射精”的最大值
+;;; - CHARA_ARR 数组名
+;;; - START 起始位置(默认为0)
+;;; - END 结束位置(默认为CHARANUM)
+;;; - @RESULT:0 数组中所有元素的和
+@MAXCARRAY(CHARA_ARR, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_ARR
+#DIM START
+#DIM END
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 得到二维数组中的最小值
+;;; - 例如“MAXCARRAY(CFLAG:LOCAL:累计射精，1, CHARANUM)”，相当
+;;; 于得到“CLAG:(1~CHARANUM):累计射精”的最小值
+;;; - CHARA_ARR 数组名
+;;; - START 起始位置(默认为0)
+;;; - END 结束位置(默认为CHARANUM)
+;;; - @RESULT:0 数组中所有元素的和
+@MINCARRAY(CHARA_ARR, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_ARR
+#DIM START
+#DIM END
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 判断字符串是否可以作为数值解析(是否可以用TOINT取值)。
+;;; - TEXT 待判断的字符串
+;;; - @RESULT:0 (可以返回1，否则返回0)
+@ISNUMERIC(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 将参数转化为整形类型,返回值存入RESULT:0
+;;; - 但是,只能转化半角字符,全角字符不会被转化
+;;; - TEXT 待转化的字符串
+;;; - @RESULT:0 (参数不能被解析为数值时,或者传入全角字符时,返回值为0)
+@TOINT(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIM NUM
+; ...
+RETURN NUM
+
+;;; 获取指定编号存档的数据,结果返回给RESULT:0和RESULT:1
+;;; - SAVE_NO 存档编号
+;;; - @RESULT:0 (0：本存档可以加载，1：没有该存档文件，2：游戏的代码不同，
+;;; 3：版本不同（gamebase.csv的"版本"值不同），4：有上述问题外的文件)
+;;; - @RESULTS:0 (当RESULT:0为0时,存档的备注信息会被返回到RESULTS:0中，
+;;; 当RESULT:0不是0时,会返回错误消息到RESULTS:0中)
+@CHKDATA(SAVE_NO)
+; BUILTIN FUNCTION
+#DIM SAVE_NO
+#DIM ERR
+; ...
+RETURN ERR
+
+;;; 得到第一个文件名指定的数据文件的文件信息
+;;; - 可以加载的时候返回0,由于某种原因不可能加载的时候返回其他值
+;;; - 在可以加载的情况下,将保存数据的备注信息返回到RESULTS:0,在不可能加载的情况下,将其理由返回的RESULTS:0
+;;; - FILENAME 文件名
+@CHKCHARADATA(FILENAME)
+; BUILTIN FUNCTION
+#DIMS FILENAME
+#DIM ERR
+; ...
+RETURN ERR
+
+;;; 搜索在dat文件夹中搜索可能成为LOADCHARA对象的文件
+;;; - 例如FIND_CHARADATA("*你*")时,会查找chara_*你*.dat。
+;;; chara_001你.dat或chara_你ABC.dat会被选中
+;;; - chara_.dat(*为空字符串)不能被LOADCHARA指定,所以不会被选中
+;;; - hit数超过RESULTS要元素个数的情况不会出错,但是超过的部分的文件名不会被返回
+;;; - str FILENAME 文件名
+;;; - str @RESULTS:0 (返回文件名，也就是chara_.dat的部分)
+;;; - int @RESULT:0 发现的文件个数
+@FIND_CHARADATA(FILENAME)
+; BUILTIN FUNCTION
+#DIMS FILENAME  ; glob
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 将emuera中玩家设置的"使用するセーブデータ数"(emuera1824中文版中为"使用存档数量")值返回到RESULT:0中,默认是20
+@SAVENOS()
+; BUILTIN FUNCTION
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 得到玩家设置的"PRINTCを並べる数"
+;;; - (emuera1824中文版中为"PRINTC并列数量")值
+;;; - @RESULT:0
+@PRINTCPERLINE()
+; BUILTIN FUNCTION
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 判断当前打印的行是否为空行
+;;; - @RESULT:0 (1为空行，0为非空行)
+@LINEISEMPTY()
+; BUILTIN FUNCTION
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 查找样本集合内的多个值，得到匹配个数
+;;; - SAMPLE 样本集合
+;;; - VALUE1 待查找的值
+;;; - VALUE2 待查找的值
+;;; - ...
+;;; - @RESULT:0 匹配个数
+@GROUPMATCH(SAMPLE, VALUE1, VALUE2, ...)
+; BUILTIN FUNCTION
+#DIM SAMPLE  ; or #DIMS SAMPLE
+#DIM VALUE1  ; or #DIMS VALUE1
+#DIM VALUE2  ; or #DIMS VALUE2
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;;检查所有指定值是否全不同
+;;; - VALUE1 待比较的值
+;;; - VALUE2 待比较的值
+;;; - ...
+;;;内容：如果传递给参数的值“全部不同”，则返回1，否则返回0
+@NOSAMES(VALUE1, VALUE2, ...)
+; BUILTIN FUNCTION
+#DIM VALUE1  ; or #DIMS VALUE1
+#DIM VALUE2  ; or #DIMS VALUE2
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 检查所有指定值是否全相同的指令ALLSAMES实现
+;;; - VALUE1 待比较的值
+;;; - VALUE2 待比较的值
+;;; - ...
+;;; - @RESULT:0 全部相同则返回1，否则返回0
+@ALLSAMES(VALUE1, VALUE2, ...)
+; BUILTIN FUNCTION
+#DIM VALUE1  ; or #DIMS VALUE1
+#DIM VALUE2  ; or #DIMS VALUE2
+#DIM BOOL
+; ...
+RETURN BOOL
+
+@ISSKIP()
+; BUILTIN FUNCTION
+#DIM BOOL
+; ...
+RETURN BOOL
+
+; Deprecated in Emuera 1.810
+@MOUSESKIP()
+; BUILTIN FUNCTION
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;;如果WAIT处于跳过状态，则返回1，否则返回0
+@MESSKIP()
+; BUILTIN FUNCTION
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 整数类型转换为以字符串形式的不同进制数字
+;;; - BASE_ 只包含2,8,10,16。
+;;; - @RESUTLT:0 返回第一个参数以2,8,10或16进制表示的字符串
+@CONVERT(NUM, BASE_)
+; BUILTIN FUNCTIONS
+#DIM NUM
+#DIM BASE_
+#DIMS HEXSTR
+; ...
+RETURN HEXSTR
+
+;;; 将给定参数的数值加上金钱单位后存入RESULTS:0
+;;; - NUM 数字
+;;; - CURRENCY (可选)，为C#的正则表达式形式，和TOSTR相似。
+;;; - @RESULTS:0 返回以字符串形式表示的货币金额。
+@MONEYSTR(NUM, CURRENCY = "")
+; BUILTIN FUNCTIONS
+#DIM NUM
+#DIMS CURRENCY
+#DIMS TEXT
+; ...
+RETURN TEXT
+
+;;; 查找ARRAY数组中为VALUE的元素的下标
+;;; - 如果有多个结果,FINDELEMENT只会返回第一个结果
+;;; - VALUE 待查找的参数
+;;; - START 起始位置
+;;; - END 结束位置
+;;; - FLAG 只有在VALUE类型为STR时才生效,若为0若字符串中包含要检索的内容即可返回其索引
+;;; 如果是0以外的话,只有和字符串完全一致的情况下才OK
+;;; - @RESULT:0 下标,如果找不到匹配的元素则返回-1
+@FINDELEMENT(ARRAY, VALUE, START = 0, END = *, FLAG)
+; BUILTIN FUNCTION
+#DIM REF ARRAY  ; or #DIMS REF ARRAY
+#DIM VALUE      ; or #DIMS VALUE
+#DIM START
+#DIM END
+#DIM FLAG       ; only when #DIMS REF ARRAY
+#DIM INDEX
+; ...
+RETURN INDEX
+
+;;; 倒序查找ARRAY数组中为VALUE的元素的下标
+;;; - 如果有多个结果,FINDELEMENT只会返回第一个结果
+;;; - VALUE 待查找的参数
+;;; - START 起始位置
+;;; - END 结束位置
+;;; - FLAG 只有在VALUE类型为STR时才生效,若为0若字符串中包含要检索的内容即可返回其索引
+;;; 如果是0以外的话,只有和字符串完全一致的情况下才OK
+;;; - @RESULT:0 下标,如果找不到匹配的元素则返回-1
+@FINDLASTELEMENT(ARRAY, VALUE, START = 0, END = *, FLAG)
+; BUILTIN FUNCTION
+#DIM REF ARRAY  ; or #DIMS REF ARRAY
+#DIM VALUE      ; or #DIMS VALUE
+#DIM START
+#DIM END
+#DIM FLAG       ; only when #DIMS REF ARRAY
+#DIM INDEX
+; ...
+RETURN INDEX
+
+@BARSTR(TEXT, MAX_, LEN)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIM MAX_
+#DIM LEN
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+;;; 将给定参数确定为颜色名称并返回0xrrggbb格式的数字。
+;;; 如果颜色名称不存在，则返回-1。
+@COLOR_FROMNAME(COLORNAME)
+; BUILTIN FUNCTION
+#DIMS COLORNAME
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 将给定的R、G和B值作为0xrrggbb格式的数字返回。
+;;; 如果参数在0-255范围之外，则会出现错误。
+@COLOR_FROMRGB(R_, G_, B_)
+; BUILTIN FUNCTION
+#DIM R_
+#DIM G_
+#DIM B_
+#DIM RGB
+; ...
+RETURN RGB
+
+;;; 获取数组中具有指定范围内数值的元素数量
+;;; - 格式：INRANGEARRAY（[对象一维数值数组变量]，[范围最小值]，[范围最大值+1]{，[数组位置初值]，[数组位置终值+1]}）
+;;; - 内容：返回数组中具有最小值<=值<最大值值的元素的数量
+@INRANGEARRAY(ARRAY, MIN_, MAX_, START = 0, END = *)
+; BUILTIN FUNCTION
+#DIM REF ARRAY
+#DIM MIN_
+#DIM MAX_
+#DIM START
+#DIM END
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; - 格式：INRANGECARRAY（[对象数值型角色数组变量]，[范围最小值]，[范围最大值+1]{，[搜索角色位置初值]，[搜索角色数组位置收盘价+1]}）
+;;; - 内容：在字符数组变量中旋转指定的数组，以获得具有最小值<=值<最大值值的元素的数量
+@INRANGECARRAY(CHARA_ARR, MIN_, MAX_, START = 0, END = CHARANUM)
+; BUILTIN FUNCTION
+#DIM REF CHARA_ARR
+#DIM MIN_
+#DIM MAX_
+#DIM START
+#DIM END
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 根据array1对所有数组进行升序排序
+;;; - array1必须是一维排列,但array2可以是多维数组
+;;; 当array1中有0或空符号串的元素时,将其视为阵列的末端,之后的元素将不再进行排序。
+;;; - 如果array2之后的数组的元素数少于array1的排序元素数,则中断指令,将返回0到RESULT:0中
+;;; 如果你成功排序了所有阵列,将返回非0的数到RESULT:0中
+@ARRAYMSORT(ARRAY, ...)
+; BUILTIN FUNCTION
+#DIM REF ARRAY
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GETLINESTR(TEXT)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+@PRINTCLENGTH()
+; BUILTIN FUNCTION
+#DIM VALUE
+; ...
+RETURN VALUE
+
+@STRFORM(TEXT)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIMS NTEXT
+; ...
+RETURN NTEXT
+
+@STRJOIN(ARRAY, SEP = ",", START = 0, LEN = *)
+; BUILTIN FUNCTIONS
+#DIMS REF ARRAY
+#DIMS SEP
+#DIM START
+#DIM LEN
+#DIMS TEXT
+; ...
+RETURN TEXT
+
+;;; 以整数获取配置和replace.csv配置项。
+;;; - 可以获取的项目如下:
+;;; - "単位の位置"				单位位置
+;;; - "オートセーブを行なう"	自动保存
+;;; - "ウィンドウ幅"			窗口宽度
+;;; - "PRINTCを並べる数"		PRINTC的排列数
+;;; - "PRINTCの文字数"			PRINTC字符数
+;;; - "フォントサイズ"			字体大小
+;;; - "一行の高さ"				一行的高度
+;;; - "表示するセーブデータ数"	保存数据显示的数量
+;;; - "販売アイテム数"			销售项目数
+;;; - "COM_ABLE初期値"			com_able初始值
+;;; - "文字色"					字符颜色
+;;; - "背景色"					背景颜色
+;;; - "選択中文字色"			选择文字颜色
+;;; - "履歴文字色"				历史字符颜色
+;;; - "PBANDの初期値"			PBAND的初始值
+;;; - "RELATIONの初期値"		RELATION的初始值
+;;; - "フォント名"				字体名称
+;;; - "お金の単位"				金钱单位
+;;; - "起動時簡略表示"			启动时简略显示
+;;; - "DRAWLINE文字"			DRAWLINE字符
+;;; - "システムメニュー0"		系统菜单0
+;;; - "システムメニュー1"		系统菜单1
+;;; - "時間切れ表示"			超时显示
+;;; - "BAR文字1"				BAR字符1
+;;; - "BAR文字2"				BAR字符2
+;;; - "描画インターフェース"	 绘图界面
+@GETCONFIG(CONFNAME)
+; BUILTIN FUNCTION
+#DIMS CANFNAME
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 以字符串获取配置和replace.csv配置项。
+;;; - 可以获取的项目如下:
+;;; - "単位の位置"				单位位置
+;;; - "オートセーブを行なう"	自动保存
+;;; - "ウィンドウ幅"			窗口宽度
+;;; - "PRINTCを並べる数"		PRINTC的排列数
+;;; - "PRINTCの文字数"			PRINTC字符数
+;;; - "フォントサイズ"			字体大小
+;;; - "一行の高さ"				一行的高度
+;;; - "表示するセーブデータ数"	保存数据显示的数量
+;;; - "販売アイテム数"			销售项目数
+;;; - "COM_ABLE初期値"			com_able初始值
+;;; - "文字色"					字符颜色
+;;; - "背景色"					背景颜色
+;;; - "選択中文字色"			选择文字颜色
+;;; - "履歴文字色"				历史字符颜色
+;;; - "PBANDの初期値"			PBAND的初始值
+;;; - "RELATIONの初期値"		RELATION的初始值
+;;; - "フォント名"				字体名称
+;;; - "お金の単位"				金钱单位
+;;; - "起動時簡略表示"			启动时简略显示
+;;; - "DRAWLINE文字"			DRAWLINE字符
+;;; - "システムメニュー0"		系统菜单0
+;;; - "システムメニュー1"		系统菜单1
+;;; - "時間切れ表示"			超时显示
+;;; - "BAR文字1"				BAR字符1
+;;; - "BAR文字2"				BAR字符2
+;;; - "描画インターフェース"	 绘图界面
+@GETCONFIGS(CONFNAME)
+; BUILTIN FUNCTIONS
+#DIMS CANFNAME
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+;;; 以Html格式获取当前正在打印的等待换行的字符串缓冲区，并清空缓冲区
+;;; - 因为没有p标记，ALIGNMENT指令下的align不会被反映。
+@HTML_POPPRINTINGSTR()
+; BUILTIN FUNCTIONS
+#DIMS HTML
+; ...
+RETURN HTML
+
+;;; 将lineNo指定的已显示行内容作为html格式的字符串。
+;;; - 行计数方法与LINECOUNT和CLEARLINE指令相同。
+@HTML_GETPRINTEDSTR(LINE_NO)
+; BUILTIN FUNCTIONS
+#DIM LINE_NO
+#DIMS HTML
+; ...
+RETURN HTML
+
+;;; 将目标字符串转义（转换为字符引用）到Html。
+;; 使用html_toplaintext函数进行解转义。
+@HTML_ESCAPE(TEXT)
+; BUILTIN FUNCTIONS
+#DIMS TEXT
+#DIMS HTML
+; ...
+RETURN HTML
+
+;;; 将目标html字符串转换为纯文本。
+;;; 具体来说，从字符串中删除html标签并展开字符引用。
+@HTML_TOPLAINTEXT(HTML)
+; BUILTIN FUNCTIONS
+#DIMS HTML
+#DIMS TEXT
+; ...
+RETURN TEXT
+
+;;; 保存字符串到文件
+;;; - 将在第一个参数的文本保存到textxxx.txt中(例如，如果fileNo是2，则为text02.txt)。
+;;; - 这个命令不会给文本添加或更改标题等,而是直接保存字符串
+;;; - 如果将第三参数指定为非0,则可以无视该选项并将其强制保存在sav文件夹中。sav文件夹是根据需要创建的。
+;;; - 在第4参数中指定非0时,无视选项并强制保存为UTF-8编码
+;;; - str TEXT 要保存的字符串
+;;; - int FILE_NO 保存文件的文件号
+;;; - int FORCE_SAVEDIR 强制使用save_dir指定的目录，0:使用当前目录
+;;; - int FORCE_UTF8 强制使用UTF-8编码，0:使用当前编码
+;;; - @RESULST:0 保存成功返回非零，否则返回0
+@SAVETEXT(TEXT, FILE_NO, FORCE_SAVEDIR = 0, FORCE_UTF8 = 0)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIM FILE_NO
+#DIM FORCE_SAVEDIR
+#DIM FORCE_UTF8
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 读取textxxx.sav文件的文本
+;;; - 如果你将第二个参数指定为非0,无论选项如何,都会在sav文件夹中寻找文件
+;;; - 在第三参数中指定非0时,会以UTF-8编码格式读取。如果失败,会返回空字符串
+;;; - int FILE_NO:要读取的文件编号
+;;; - int FORCE_SAVEDIR:强制使用save_dir指定的目录，0:使用当前目录
+;;; - int FORCE_UTF8:强制使用UTF-8编码，0:使用当前编码
+;;; - @RESULT:0:读取成功返回非零，否则返回0
+@LOADTEXT(FILE_NO, FORCE_SAVEDIR = 0, FORCE_UTF8 = 0)
+; BUILTIN FUNCTIONS
+#DIM FILE_NO
+#DIM FORCE_SAVEDIR
+#DIM FORCE_UTF8
+#DIMS TEXT
+; ...
+RETURN TEXT
+
+;;; 得到键盘和鼠标按钮的状态
+;;; - 如果你一直按,GETKEY会一直返回1
+;;; - int VK_CODE 按键代码(参考微软公司提供的MSDN的虚拟键代码)
+;;; - @RESULT:0 按下了参数中指定的键,则返回1,如果没有按下则返回0
+@GETKEY(VK_CODE)
+; BUILTIN FUNCTION
+#DIM VK_CODE
+#DIM PRESSED
+; ...
+RETURN PRESSED
+
+;;; 检测指定虚拟键码（Virtual Key Code）的按键是否被触发
+;;; - GETKEYTRIGGERD只在按下第一次返回1,之后返回0
+;;; - Emuera的窗口激活时返回1,如果不是激活状态则不管键状态如何都返回0
+;;; - int VK_CODE 按键代码(参考微软公司提供的MSDN的虚拟键代码)
+;;; - @RESULT:0 按下了参数中指定的键,则返回1,如果没有按下则返回0
+@GETKEYTRIGGERED(VK_CODE)
+; BUILTIN FUNCTION
+#DIM VK_CODE
+#DIM PRESSED
+; ...
+RETURN PRESSED
+
+;;; 得到解释器区域的宽度
+;;; 获取客户端区域（窗口的绘制区域）的当前宽度
+;;; 该数字不包括窗口框、菜单栏、滚动条或文本输入区域的宽度或高度。
+@CLIENTWIDTH()
+; BUILTIN FUNCTION
+#DIM WIDTH
+; ...
+RETURN WIDTH
+
+;;; 得到解释器区域的宽度
+;;; 获取客户端区域（窗口的绘制区域）的当前高度
+;;; 该数字不包括窗口框、菜单栏、滚动条或文本输入区域的宽度或高度。
+@CLIENTHEIGHT()
+; BUILTIN FUNCTION
+#DIM HEIGHT
+; ...
+RETURN HEIGHT
+
+;;; 获取鼠标光标的当前X坐标
+;;; - 坐标是以解释器区域的左下位置为(0,0)的相对位置，
+;;; 右侧是x轴的正方向，下方是y轴的正方向。
+;;; - 注意,如果光标在解释器区域内,MOUSEY将返回负值。
+;;; - 解释器区域的宽度可以通过CLIENTWIDTH、CLIENTHEIGHT函数获取
+;;; - (如果需要以解释器区域左上方为基准的Y坐标，可以通过MOUSEY()+CLIENTHEIGHT()获取)
+;;; - 这个函数即使Emuera的窗口不激活,或者鼠标光标在窗口外也能正常工作
+@MOUSEX()
+; BUILTIN FUNCTION
+#DIM X_
+; ...
+RETURN X_
+
+;;; 获取鼠标光标的当前Y坐标
+;;; - 坐标是以解释器区域的左下位置为(0,0)的相对位置，
+;;; 右侧是x轴的正方向，下方是y轴的正方向。
+;;; - 注意! 如果光标在解释器区域内,MOUSEY将返回负值。
+;;; - 解释器区域的宽度可以通过CLIENTWIDTH、CLIENTHEIGHT函数获取
+;;; - (如果需要以解释器区域左上方为基准的Y坐标，可以通过MOUSEY()+CLIENTHEIGHT()获取)
+;;; - 这个函数即使Emuera的窗口不激活,或者鼠标光标在窗口外也能正常工作
+@MOUSEY()
+; BUILTIN FUNCTION
+#DIM Y_
+; ...
+RETURN Y_
+
+;;;返回Emuera的窗口状态。
+;;;如果激活,就返回1,如果不激活,就返回0。
+@ISACTIVE()
+; BUILTIN FUNCTION
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 检测指定名称的精灵是否已经创建
+;;; - str SPRITENAME 精灵名称
+;;; - @RESULT:0 精灵已经创建返回非零，否则返回0
+@SPRITECREATED(SPRITENAME)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM BOOL
+; ...
+RETURN BOOL
+
+;;; 获得指定名称的精灵的宽度。
+;;; 如果该精灵图没有创建或者已经废弃,则返回0
+@SPRITEWIDTH(SPRITENAME)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM WIDTH
+; ...
+RETURN WIDTH
+
+;;; 获得指定名称的精灵的高度。
+;;; 如果该精灵图没有创建或者已经废弃,则返回0
+@SPRITEHEIGHT(SPRITENAME)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM HEIGHT
+; ...
+RETURN HEIGHT
+
+;;; 取得指定名称精灵的相对位置X坐标
+;;; 如果该精灵图没有创建或者已经废弃,则返回0。
+@SPRITEPOSX(SPRITENAME)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM X_
+; ...
+RETURN X_
+
+;;; 取得指定名称精灵的相对位置Y坐标
+;;; 如果该精灵图没有创建或者已经废弃,则返回0。
+@SPRITEPOSY(SPRITENAME)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM Y_
+; ...
+RETURN Y_
+
+;;; 设定指定名称的精灵的相对位置X, Y
+@SPRITESETPOS(SPRITENAME, X_, Y_)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM X_
+#DIM Y_
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 将指定名称的精灵的相对位置的X、Y加上指定值, 与以下代码效果相同
+@SPRITEMOVE(SPRITENAME, DX, DY)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM DX
+#DIM DY
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 在指定的ID创建指定大小的G图像
+;;; - G图像的ID必须是0及以上的整数,宽和高必须是1及以上8192几以下之间的整数值
+;;; 若参数不在这个范围内会报错
+;;; 文件不存在、无法识别为图像、文件尺寸过大等失败的情况也返回0
+;;; - int GRAPHIC_ID G图像ID
+;;; - int WIDTH 
+;;; - int HEIGHT
+;;; - @RESULT:0 图像创建成功返回非0值，如果已经创建了指定ID的G图像,则返回0
+@GCREATE(GRAPHIC_ID, WIDTH, HEIGHT)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM WIDTH
+#DIM HEIGHT
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 用相对路径指定resources文件夹中的图像文件,打开该图像并创建G图像
+;;; - 与在resources文件夹中的csv文件中声明资源时不同,图像文件不会被锁定
+;;; 如果创建成功,则返回非0值
+;;; - 如果已经创建了指定ID的G图像,则G图像创建失败,该指令将返回0并结束
+;;; 文件不存在、无法识别为图像、文件尺寸过大等失败的情况也返回0
+;;; - G图像处理后并不会显示,要想显示需要配合SPRITECREATE及PRINT_IMG使用
+;;; - int GRAPHIC_ID G图像的ID
+;;; - string FILEPATH 图像文件的相对路径
+;;; - @RESULT:0 图像创建成功返回非0值，如果已经创建了指定ID的G图像,则返回0
+@GCREATEFROMFILE(GRAPHIC_ID, FILEPATH)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIMS FILEPATH
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 丢弃指定ID的G图像
+;;; - 如果废弃成功的话,返回非0值
+;;; - int GRAPHIC_ID
+;;; - @RESULT:0 废弃成功返回非0值，如果指定ID的G图像未被创建(或已经已废弃的图像),则返回0
+@GDISPOSE(GRAPHIC_ID)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 用指定的颜色替换指定ID的G图像内全部内容
+;;; - G图像处理后并不会显示,要想显示需要配合SPRITECREATE及PRINT_IMG使用
+;;; - ID或颜色指定不合适的情况下会报错
+;;; - int GRAPHIC_ID
+;;; - @RESULT:0 成功返回非0值，如果指定ID的G图像未被创建(或已经已废弃的图像),则返回0
+@GCLEAR(GRAPHIC_ID, ARGB)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM ARGB
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+
+;;; 在指定ID的G图像中，用(x, y, 宽, 高)绘制指定的四边形。
+;;; - 如果处理成功，则返回非0。
+;;; - 绘制的颜色如果没有通过GSETBRUSH命令预先指定,则以Emuera图标的文字颜色绘制
+;;; - G图像处理后并不会显示,要想显示需要配合SPRITECREATE及PRINT_IMG使用
+@GFILLRECTANGLE(GRAPHIC_ID, X_, Y_, WIDTH, HEIGHT)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM X_
+#DIM Y_
+#DIM WIDTH
+#DIM HEIGHT
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GDRAWG(DST_ID, SRC_ID, DST_X, DST_Y, DST_W, DST_H, SRC_X, SRC_Y, SRC_H, SRC_W, CM = ?)
+; BUILTIN FUNCTION
+#DIM DST_ID
+#DIM SRC_ID
+#DIM DST_X
+#DIM DST_Y
+#DIM DST_W
+#DIM DST_H
+#DIM SRC_X
+#DIM SRC_Y
+#DIM SRC_H
+#DIM SRC_W
+#DIM REF CM
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GDRAWGWITHMASK(DST_ID, SRC_ID, MASK_ID, DST_X, DST_Y)
+; BUILTIN FUNCTION
+#DIM DST_ID
+#DIM SRC_ID
+#DIM MASK_ID
+#DIM DST_X
+#DIM DST_Y
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GDRAWSPRITE(GRAPHIC_ID, SPRITENAME, DST_X = ?, DST_Y = ?, DST_W = ?, DST_H = ?, CM = ?)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIMS SPRITENAME
+#DIM DST_X
+#DIM DST_Y
+#DIM DST_W
+#DIM DST_H
+#DIM REF CM
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GSETCOLOR(GRAPHIC_ID, ARGB, X_, Y_)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM ARGB
+#DIM X_
+#DIM Y_
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GSETBRUSH(GRAPHIC_ID, ARGB)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM ARGB
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GSETFONT(GRAPHIC_ID, FONTNAME, FONTSIZE)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIMS FONTNAME
+#DIM FONTSIZE
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GSETPEN(GRAPHIC_ID, ARGB, PENWIDTH)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM ARGB
+#DIM PENWIDTH
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 创建G图像
+;;; - int GRAPHIC_ID
+;;; - @RESULT:0 图像已创建返回非0值，如果未创建(包括已丢弃的图像),则返回0
+@GCREATED(GRAPHIC_ID)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM BOOL
+; ...
+RETURN BOOL
+
+@GWIDTH(GRAPHIC_ID)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM WIDTH
+; ...
+RETURN WIDTH
+
+@GHEIGHT(GRAPHIC_ID)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM HEIGHT
+; ...
+RETURN HEIGHT
+
+@GGETCOLOR(GRAPHIC_ID, X_, Y_)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM X_
+#DIM Y_
+#DIM ARGB
+; ...
+RETURN ARGB
+
+@GSAVE(GRAPHIC_ID, FILE_NO)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM FILE_NO
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GLOAD(GRAPHIC_ID, FILE_NO)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM FILE_NO
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 以指定的ID的G图像的全部或一部分创建具有指定资源名的精灵资源
+;;; - 因为该雪碧图只存储父G图像的ID和剪切位置,所以如果父G图像发生变化,雪碧图也会发生变化
+;;; 父G图像被丢弃的话,雪碧图也会被丢弃处理
+;;; - 可以用resouces文件夹中的csv声明资源来处理你制作的雪碧图
+;;; - 通过指定(X,Y,宽,高),可以将G图像进行裁剪
+;;; - 可通过PRINT_IMG命令和HTML_print的IMG标签来绘制雪碧图
+;;; - str SPRITENAME 精灵图名
+;;; - GRAPHIC_ID
+;;; - X_
+;;; - Y_
+;;; - WIDTH
+;;; - HEIGHT
+;;; - SUCCESS
+;;; - @RESULT:0 创建成功返回非0值，如果已经创建了指定资源名的精灵图或其他问题失败,则返回0
+@SPRITECREATE(SPRITENAME, GRAPHIC_ID, X_ = ?, Y_ = ?, WIDTH = ? , HEIGHT = ?)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM GRAPHIC_ID
+#DIM X_
+#DIM Y_
+#DIM WIDTH
+#DIM HEIGHT
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 创建具有指定资源名,宽和高的动画雪碧图。
+;;; - str SPRITEAME 精灵图名
+;;; - int WIDTH 宽
+;;; - int HEIGHT 高
+;;; - @RESULT:0 如果创建成功,则返回非0值.相同资源名的雪碧已经存在等问题导致失败时,返回0。
+@SPRITEANIMECREATE(SPRITENAME, WIDTH, HEIGHT)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM WIDTH
+#DIM HEIGHT
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+;;; 向指定资源名的精灵图中添加帧
+;;; 将指定ID的G图像X,Y,宽,高对应的区域,粘贴到精灵图指定的XY位置
+;;; - 超出制作动画雪碧时设定的尺寸范围的部分不会被绘制。
+;;; - 在delay中指定显示这个帧的时间,毫秒为单位
+;;; - str SPRITENAME 精灵图名
+;;; - int GRAPHIC_ID G图像的ID
+;;; - int X_ 
+;;; - int Y_
+;;; - int WIDTH
+;;; - int HEIGHT
+;;; - int OFFSET_X 精灵图X
+;;; - int OFFSET_Y 精灵图Y
+;;; - int DELAY 显示这个帧的时间（ms）
+;;; - @RESULT:0
+;;; 如果指定的资源名不存在,或者不是动画精灵,这个指令失败,什么都不做
+;;; 成功添加空格时返回1，失败时返回0。
+@SPRITEANIMEADDFRAME(SPRITENAME, GRAPHIC_ID, X_, Y_, WIDTH, HEIGHT, OFFSET_X, OFFSET_Y, DELAY)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM GRAPHIC_ID
+#DIM X_
+#DIM Y_
+#DIM WIDTH
+#DIM HEIGHT
+#DIM OFFSET_X
+#DIM OFFSET_Y
+#DIM DELAY
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+
+;;; 丢弃指定的资源名称的精灵图
+;;; - 这个命令不会影响精灵图的父G图像
+;;; - 可以通过GDISPOSE指令来释放分配给G图像的内存
+;;; - str SPRITENAME 精灵图名
+;;; - @RESULT:0 丢弃成功返回非0值，丢弃失败(比如资源不存在)返回0
+@SPRITEDISPOSE(SPRITENAME)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@SPRITEGETCOLOR(SPRITENAME, X_, Y_)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM X_
+#DIM Y_
+#DIM ARGB
+; ...
+RETURN ARGB
+
+@CBGSETG(GRAPHIC_ID, X_, Y_, Z_DEPTH)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM X_
+#DIM Y_
+#DIM Z_DEPTH
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGSETSPRITE(SPRITENAME, X_, Y_, Z_DEPTH)
+; BUILTIN FUNCTION
+#DIMS SPRITENAME
+#DIM X_
+#DIM Y_
+#DIM Z_DEPTH
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGCLEAR()
+; BUILTIN FUNCTION
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGCLEARBUTTON()
+; BUILTIN FUNCTION
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGREMOVERANGE(Z_MXN, Z_MAX)
+; BUILTIN FUNCTION
+#DIM Z_MIN
+#DIM Z_MAX
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGREMOVEBMAP()
+; BUILTIN FUNCTION
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGSETBMAPG(GRAPHIC_ID)
+; BUILTIN FUNCTION
+#DIM GRAPHIC_ID
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@CBGSETBUTTONSPRITE(BUTTON, SPRITENAME1, SPRITENAME2, X_, Y_, Z_DEPTH, TOOLTIP = ?)
+; BUILTIN FUNCTION
+#DIM BUTTON
+#DIMS SPRITENAME1
+#DIMS SPRITENAME2
+#DIM X_
+#DIM Y_
+#DIM Z_DEPTH
+#DIMS TOOLTIP
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@HTML_STRINGLEN(HTML, RETURNPIXEL)
+; BUILTIN FUNCTION
+#DIMS HTML
+#DIM RETURNPIXEL
+#DIM STRINGLENGTH
+#DIM STRINGPIXEL
+; ...
+IF RETURNPIXEL
+	RETURN STRINGPIXEL
+ELSE
+	RETURN STRINGLENGTH
+ENDIF
+
+@HTML_SUBSTRING(HTML, WIDTH)
+; BUILTIN FUNCTION
+#DIMS HTML
+#DIM WIDTH
+#DIMS STRING
+; ...
+RETURN STRING
+
+@GETDISPLAYLINE(LINE)
+; BUILTIN FUNCTION
+#DIM LINE
+#DIMS STRING
+; ...
+RETURN STRING
+
+;;; 第一参数匹配第二参数的正则表达模式时，返回匹配的个数
+@REGEXPMATCH(STRING)
+; BUILTIN FUNCTION
+#DIMS STRING
+#DIMS PATTERN
+#DIM COUNT
+; ...
+RETURN COUNT
+
+@ISDEFINED(MACRONAME)
+; BUILTIN FUNCTION
+#DIMS MACRONAME
+#DIM EXIST
+; ...
+RETURN EXIST
+
+;;; 检查参数指定的变量是否定义（没找到介绍）
+;;; - VARNAME 变量名
+;;; - @RESULT:0 返回VARNAM的类型（没整明白）
+@EXISTVAR(VARNAME)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIM VARIABLETYPE
+; ...
+RETURN VARIABLETYPE
+
+
+@ENUMFUNCBEGINSWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+@ENUMFUNCENDSWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+@ENUMFUNCWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+@ENUMVARBEGINSWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 返回变量名以参数结尾的变量总量
+@ENUMVAREMDSWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 返回变量名包含参数的变量总量 
+@ENUMVARWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 返回宏名以参数开头的宏总量
+@ENUMMACROBEGINSWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 返回宏名以参数结尾的宏总量
+@ENUMMACROENDSWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 返回宏名包含参数的宏总量
+@ENUMMACROWITH(KEYWORD)
+; BUILTIN FUNCTION
+#DIMS KEYWORD
+#DIM COUNT
+; ...
+RETURN COUNT
+
+;;; 使用FORM方式获得变量的值(整数型)
+@GETVAR(VARNAME)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIM VALUE
+; ...
+RETURN VALUE
+
+;;; 使用FORM方式获得变量的值(字符串型)
+@GETVARS(VARNAME)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIMS STRING
+; ...
+RETURN STRING
+
+
+;;; 使用FORM方式为变量赋值
+@SETVAR(VARNAME, VALUE)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIM VALUE ;or #DIMS STRING
+; ...
+RETURN 1
+
+;;; 将指定变量数组的指定范围内，代入相同值或进行初始化
+;;; - VARNAME:变量名
+;;; - VALUE:要赋的值，可以是整数，也可以是字符串
+;;; - ALLDIM:要赋值的数组的维数，从1开始
+;;; - FROM:要赋值的数组的开始维数，从1开始
+;;; - TO:要赋值的数组的结束维数，从1开始
+;;; - @RESULT:0 返回1（不懂）
+@VARSETEX(VARNAME, VALUE, ALLDIM, FROM, TO)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIM VALUE
+#DIM ALLDIM
+#DIM FROM
+#DIM TO
+; ...
+RETURN 1
+
+@ARRAYMSORTEX(VARNAME, VARLIST, ASCENDING, SIZE)
+; BUILTIN FUNCTION
+#DIMS VARNAME
+#DIMS VARLIST
+#DIM ASCENDING
+#DIM SIZE
+; ...
+RETURN 1
+
+@ERDNAME(VAR, INDEX, DIMENSION)
+; BUILTIN FUNCTION
+#DIM REF VAR  ;or #DIMS REF VAR
+#DIM INDEX
+#DIM DIMENSION
+#DIMS INDEXNAME
+; ...
+RETURN INDEXNAME
+
+@EXISTFUNCTION(FUCNAME)
+; BUILTIN FUNCTION
+#DIMS FUNCNAME
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@MOUSEB()
+; BUILTIN FUNCTION
+#DIMS BUTTONSTRING
+; ...
+RETURN BUTTONSTRING
+
+@GDRAWTEXT(GID, TEXT, X, Y)
+; BUILTIN FUNCTION
+#DIM GID
+#DIMS TEXT
+#DIM X
+#DIM Y
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@GGETFONT(GID)
+; BUILTIN FUNCTION
+#DIM GID
+#DIMS FONTNAME
+; ...
+RETURN FONTNAME
+
+@(GID)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM FONTSIZE
+; ...
+RETURN FONTSIZE
+
+@GGETFONTSTYLE(GID)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM FONTSTYLE
+; ...
+RETURN FONTSTYLE
+
+@GGETTEXTSIZE(TEXT, FONTNAME, FONTSIZE, FONTSTYLE)
+; BUILTIN FUNCTION
+#DIMS TEXT
+#DIMS FONTNAME
+#DIM FONTSIZE
+#DIM FONTSTYLE
+#DIM WIDTH
+#DIM HEIGHT
+; ...
+RETURN WIDTH, HEIGHT
+
+@GDRAWGWITHROTATE(GID, DESTID, ANGLE, X, Y)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM DESTID
+#DIM ANGLE
+#DIM X
+#DIM Y
+#DIM SUCCCESS
+; ...
+RETURN SUCCESS
+
+@GGETPEN(GID)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM PENCOLOR
+; ...
+RETURN PENCOLOR
+
+@GGETPENWIDTH(GID)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM WIDTH
+; ...
+RETURN WIDTH
+
+@GGETBRUSH(GID)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM BRUSHCOLOR
+; ...
+RETURN BRUSHCOLOR
+
+@GDRAWLINE(GID, FROMX, FROMY, TOX, TOY)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM FROMX
+#DIM FROMY
+#DIM TOX
+#DIM TOY
+; ...
+RETURN 1
+
+@GDASHSTYLE(GID, DASHSTYLE, DASHCAP)
+; BUILTIN FUNCTION
+#DIM GID
+#DIM DASHSTYLE
+#DIM DASHCAP
+; ...
+RETURN 1
+
+@EXISTSOUND(FILENAME)
+; BUILTIN FUNCTION
+#DIMS FILENAME
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@XML_DOCUMENT(XMLID, XMLCONTENT)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XMLCONTENT
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@XML_RELEASE(XMLID)
+; BUILTIN FUNCTION
+#DIM XMLID
+; ...
+RETURN 1
+
+@XML_EXIST(XMLID)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@XML_GET(XMLID, XPATH)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_GET_BYNAME(XMLNAME, XPATH)
+; BUILTIN FUNCTION
+#DIMS XMLNAME
+#DIMS XPATH
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_SET(XMLID, XPATH, VALUE)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIMS VALUE
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_SET_BYNAME(XMLNAME, XPATH, VALUE)
+; BUILTIN FUNCTION
+#DIMS XMLNAME
+#DIMS XPATH
+#DIMS VALUE
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_TOSTR(XMLID)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XMLSTR
+; ...
+RETURN XMLSTR
+
+@XML_ADDNODE(XMLID, XPATH, NODE)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIMS NODE
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_ADDNODE_BYNAME(XMLNAME, XPATH, NODE)
+; BUILTIN FUNCTION
+#DIMS XMLNAME
+#DIMS XPATH
+#DIMS NODE
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_REMOVENODE(XMLID, XPATH)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_REMOVENODE_BYNAME(XMLID, XPATH)
+; BUILTIN FUNCTION
+#DIMS XMLID
+#DIMS XPATH
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_REPLACE(XMLID, XPATH, REPLACEXML)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIMS REPLACEXML
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_REPLACE(XMLNAME, XPATH, REPLACEXML)
+; BUILTIN FUNCTION
+#DIMS XMLNAME
+#DIMS XPATH
+#DIMS REPLACEXML
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_ADDATTRIBUTE(XMLID, XPATH, ATTRIBUTE)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIMS ATTRIBUTE
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_ADDATTRIBUTE_BYNAME(XMLNAME, XPATH, ATTRIBUTE)
+; BUILTIN FUNCTION
+#DIMS XMLNAME
+#DIMS XPATH
+#DIMS ATTRIBUTE
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_REMOVEATTRIBUTE(XMLID, XPATH)
+; BUILTIN FUNCTION
+#DIM XMLID
+#DIMS XPATH
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@XML_REMOVEATTRIBUTE_BYNAME(XMLNAME, XPATH)
+; BUILTIN FUNCTION
+#DIMS XMLNAME
+#DIMS XPATH
+#DIM XPATHCOUNT
+; ...
+RETURN XPATHCOUNT
+
+@MAP_CREATE(MAPNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@MAP_EXIST(MAPNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@MAP_RELEASE(MAPNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+; ...
+RETURN 1
+
+@MAP_GET(MAPNAME, KEY)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIMS KEY
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+@MAP_HAS(MAPNAME, KEY)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIMS KEY
+#DIM KEYEXIST
+; ...
+RETURN KEYEXIST
+
+@MAP_SET(MAPNAME, KEY, VALUE)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIMS KEY
+#DIMS VALUE
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@MAP_SIZE(MAPNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIM LENGTH
+; ...
+RETURN LENGTH
+
+@MAP_CLEAR(MAPNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@MAP_GETKEYS(MAPNAME, VARIABLE, OPTION)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIMS REF VARIABLE
+#DIM OPTION
+#DIMS MAPSTRING
+; ...
+RETURN MAPSTRING
+
+@MAP_TOXML(MAPNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIMS XML
+; ...
+RETURN XML
+
+@MAP_FROMXML(MAPNAME, XMLNAME)
+; BUILTIN FUNCTION
+#DIMS MAPNAME
+#DIMS XMLNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_CREATE(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_EXIST(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@DT_RELEASE(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+; ...
+RETURN 1
+
+@DT_CLEAR(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_NOCASE(DTNAME, IGNORECASE)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM IGNORECASE
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_COLUMN_ADD(DTNAME, COLUMNNAME, TYPE, NULLABLE)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS COLUMNNAME
+#DIM TYPE ;or #DIMS TYPE
+#DIM NULLABLE
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_COLUMN_EXIST(DTNAME, COLUMNNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS COLUMNNAME
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@DT_COLUMN_REMOVE(DTNAME, COLUMNNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS COLUMNNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_COLUMN_LENGTH(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM LENGTH
+; ...
+RETURN LENGTH
+
+@DT_COLUMN_NAMES(DTNAME, VARIABLE)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS REF VARIABLE
+#DIM LENGTH
+; ...
+RETURN LENGTH
+
+@DT_ROW_ADD(DTNAME, ROWNAME, ROWVALUE)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS ROWNAME
+#DIM ROWVALUE ;or #DIMS ROWVALUE
+#DIM ROWID
+; ...
+RETURN ROWID
+
+@DT_ROW_SET(DTNAME, ROWID, ROWNAME, ROWVALUE)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ROWID
+#DIMS ROWNAME
+#DIM ROWVALUE ;or #DIMS ROWVALUE
+#DIM EDITEDROWCOUNT
+; ...
+RETURN EDITEDROWCOUNT
+
+@DT_ROW_REMOVE(DTNAME, ROWID)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ROWID
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_ROW_LENGTH(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM LENGTH
+; ...
+RETURN LENGTH
+
+@DT_CELL_GET(DTNAME, ROWID, COLUMNNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ROWID
+#DIMS COLUMNNAME
+#DIM VALUE
+; ...
+RETURN VALUE
+
+@DT_CELL_GETS(DTNAME, ROWID, COLUMNNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ROWID
+#DIMS COLUMNNAME
+#DIMS VALUE
+; ...
+RETURN VALUE
+
+@DT_CELL_ISNULL(DTNAME, ROWID, COLUMNNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ROWID
+#DIMS COLUMNNAME
+#DIM ISNULL
+; ...
+RETURN ISNULL
+
+@DT_CELL_SET(DTNAME, ROWID, COLUMNNAME, VALUE)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIM ROWID
+#DIMS COLUMNNAME
+#DIM VALUE ;or #DIMS VALUE
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@DT_SELECT(DTNAME, FILTER, SORTRULE, ROWID)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS FILTER
+#DIMS SORTRULE
+#DIM REF ROWID
+#DIM COUNT
+; ...
+RETURN COUNT
+
+@DT_TOXML(DTNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS XMLSTRING
+; ...
+RETURN XMLSTRING
+
+@DT_FROMXML(DTNAME, SCHEMAXML, XMLNAME)
+; BUILTIN FUNCTION
+#DIMS DTNAME
+#DIMS SCHEMAXML
+#DIMS XMLNAME
+#DIM SUCCESS
+; ...
+RETURN SUCCESS
+
+@EXISTFILE(FILNAME)
+; BUILTIN FUNCTION
+#DIMS FILENAME
+#DIM ISEXIST
+; ...
+RETURN ISEXIST
+
+@ENUMFILES(DIRECTORY, PATTERN, OPTION)
+; BUILTIN FUNCTION
+#DIMS DIRECTORY
+#DIMS PATTERN
+#DIM OPTION
+#DIM COUNT
+; ...
+RETURN COUNT
+
+@GETMEMORYUSAGE()
+; BUILTIN FUNCTION
+#DIM USAGEMEMORY
+; ...
+RETURN USAGEMEMORY
+
+@CLEARMEMORY()
+; BUILTIN FUNCTION
+#DIM MEMORYSIZE
+; ...
+RETURN MEMORYSIZE
+
+@SETTEXTBOX(TEXT)
+; BUILTIN FUNCTION
+#DIMS TEXT
+; ...
+RETURN 1
+
+@GETTEXTBOX()
+; BUILTIN FUNCTION
+#DIMS TEXT
+; ...
+RETURN TEXT
+
+@MOVETEXTBOX(XPOS, YPOS, WIDTH)
+; BUILTIN FUNCTION
+#DIM XPOS
+#DIM YPOS
+#DIM WIDTH
+; ...
+RETURN 1
+
+@RESUMETEXTBOX()
+; BUILTIN FUNCTION
+
+; ...
+RETURN 1
+
+@GETDOINGFUNCTION()
+; BUILTIN FUNCTION
+#DIMS FUNCTIONNAME
+; ...
+RETURN FUNCTIONNAME
+
+@TOOLTIP_IMG
+; BUILTIN FUNCTION
+
+; ...
+RETURN 1
